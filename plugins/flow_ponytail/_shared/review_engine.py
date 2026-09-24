@@ -132,14 +132,27 @@ def _dedupe(findings: list[ReviewFinding]) -> list[ReviewFinding]:
 def _scan_line(line: str, path: str, line_no: int) -> list[ReviewFinding]:
     found: list[ReviewFinding] = []
     stripped = line.strip()
-    if not stripped or stripped.startswith("#"):
+    if not stripped:
+        return found
+
+    # 注释信号要能在注释行上报警，其他信号只在代码行上报警。
+    if _PLACEHOLDER.search(stripped):
+        found.append(
+            _finding(
+                "commentary-excuse",
+                path,
+                line_no,
+                stripped[:48],
+                "placeholder comment left in the added code",
+                "fix the thing being worked around, then delete the comment",
+            )
+        )
+    if stripped.startswith("#"):
         return found
 
     for code, label, delete in SIGNALS:
         if code == "speculative-generality" and _SPECULATIVE.match(line):
             found.append(_finding(code, path, line_no, "conditional branch", label, delete))
-        if code == "commentary-excuse" and _PLACEHOLDER.search(line):
-            found.append(_finding(code, path, line_no, stripped[:48], "placeholder comment", delete))
         if code == "config-without-choice" and _CONFIG_DEFAULT.match(line):
             found.append(_finding(code, path, line_no, stripped[:48], "single-valued setting", delete))
         if code == "reimplemented-stdlib" and _reimplements_stdlib(stripped):

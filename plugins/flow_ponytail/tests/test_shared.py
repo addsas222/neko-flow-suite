@@ -47,7 +47,7 @@ def test_intensity_levels_normalise() -> None:
 def test_off_is_not_a_safety_off_switch() -> None:
     rules = agent_ruleset("off")
     assert "switched off" in rules
-    assert "safety guards stay in place" in rules
+    assert "Safety guards stay in place" in rules
 
 
 def test_full_ruleset_contains_ladder_and_safety() -> None:
