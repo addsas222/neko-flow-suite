@@ -1,0 +1,14 @@
+{
+  "ponytail.title": "极简教练",
+  "ponytail.subtitle": "最好的代码是你没写的那段。",
+  "ponytail.actions.review": "审查 diff",
+  "ponytail.actions.audit": "审计仓库",
+  "ponytail.actions.debt": "技术债台账",
+  "ponytail.actions.ladder": "YAGNI 阶梯",
+  "ponytail.actions.ruleset": "导出规则集",
+  "ponytail.actions.intensity": "强度等级",
+  "ponytail.fields.diff": "diff 文本",
+  "ponytail.fields.root": "仓库路径",
+  "ponytail.fields.level": "强度等级",
+  "ponytail.messages.safetyKept": "删除时保留全部安全护栏；关掉护栏是独立的授权目标。"
+}

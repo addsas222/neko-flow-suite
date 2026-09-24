@@ -1,0 +1,4 @@
+[project]
+name = "flow_simplify"
+version = "0.1.0"
+dependencies = []

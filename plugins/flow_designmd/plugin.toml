@@ -1,0 +1,40 @@
+[plugin]
+  id = "flow_designmd"
+  name = "Flow DesignMD · 设计系统语料索引"
+  type = "plugin"
+  description = "把 VoltAgent/awesome-design-md 的 DESIGN.md 语料做成可检索索引：扫描 design-md/<slug>/DESIGN.md，解析 front matter 的 colors/typography/spacing/radius/shadow/motion，导出 CSS 自定义属性块或 token 清单。"
+  short_description = "DESIGN.md corpus index: scan, lookup, search, export to CSS variables."
+  keywords = ["设计系统", "design", "DESIGN.md", "token", "css", "catalog", "语料"]
+  version = "0.1.0"
+  entry = "plugin.plugins.flow_designmd:FlowDesignMdPlugin"
+
+[plugin.author]
+  name = "N.E.K.O. flow suite"
+
+[plugin.sdk]
+  recommended = ">=0.1.0,<0.2.0"
+  supported = ">=0.1.0,<0.3.0"
+
+[plugin.ui]
+  enabled = true
+
+[[plugin.ui.panel]]
+  id = "main"
+  title = "Flow DesignMD"
+  entry = "ui/panel.tsx"
+  context = "dashboard"
+  permissions = ["state:read", "action:call"]
+
+[[plugin.ui.guide]]
+  id = "guide"
+  title = "使用指南"
+  entry = "docs/guide.md"
+  permissions = ["state:read"]
+
+[plugin_runtime]
+  enabled = true
+  auto_start = true
+
+[designmd]
+  default_root = "design-md"
+  exports = ["css", "json", "markdown"]

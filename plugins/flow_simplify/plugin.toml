@@ -1,0 +1,48 @@
+[plugin]
+id = "flow_simplify"
+name = "代码瘦身"
+description = "用证据证明并移除代码库里的偶然复杂度，同时保护仍然有效的契约。Survey 只读审计，Change 授权修改；一次只处理一个所有权边界。"
+short_description = "Prove and remove accidental codebase complexity without breaking behavior."
+keywords = ["简化", "simplify", "重构", "refactor", "死代码", "dead code", "复杂度", "complexity", "审计", "audit", "删除", "delete"]
+version = "0.1.0"
+type = "plugin"
+entry = "plugin.plugins.flow_simplify:FlowSimplifyPlugin"
+
+[plugin.author]
+name = "NEKO Flow Pack"
+
+[plugin.sdk]
+recommended = ">=0.1.0,<0.2.0"
+supported = ">=0.1.0,<0.3.0"
+
+[plugin.i18n]
+default_locale = "zh-CN"
+locales_dir = "i18n"
+
+[plugin.store]
+enabled = true
+
+[plugin.ui]
+enabled = true
+
+[[plugin.ui.panel]]
+id = "simplify"
+title = "代码瘦身"
+entry = "ui/panel.tsx"
+context = "simplify"
+permissions = ["state:read", "action:call", "config:read"]
+
+[[plugin.ui.guide]]
+id = "quickstart"
+title = "证明先行"
+entry = "docs/quickstart.md"
+permissions = ["state:read"]
+
+[plugin_runtime]
+enabled = true
+auto_start = true
+
+[simplify]
+default_scope = "broad"
+candidate_limit = 400
+require_explicit_authorize = true

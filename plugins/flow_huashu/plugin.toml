@@ -1,0 +1,40 @@
+[plugin]
+  id = "flow_huashu"
+  name = "Flow Huashu · 三方向硬门"
+  type = "plugin"
+  description = "把 alchaincyf/huashu-design 的铁律做成可执行插件：任务路由表叠加入口链；任何产出新视觉的任务 100% 先过三方向硬门；事实断言前必须检索；按媒介轮换工作室角色。"
+  short_description = "HTML-native design gates: routing table, three-direction gate, fact verification."
+  keywords = ["设计", "原型", "幻灯片", "动画", "design", "gate", "huashu", "三方向", "HTML"]
+  version = "0.1.0"
+  entry = "plugin.plugins.flow_huashu:FlowHuashuPlugin"
+
+[plugin.author]
+  name = "N.E.K.O. flow suite"
+
+[plugin.sdk]
+  recommended = ">=0.1.0,<0.2.0"
+  supported = ">=0.1.0,<0.3.0"
+
+[plugin.ui]
+  enabled = true
+
+[[plugin.ui.panel]]
+  id = "main"
+  title = "Flow Huashu"
+  entry = "ui/panel.tsx"
+  context = "dashboard"
+  permissions = ["state:read", "action:call"]
+
+[[plugin.ui.guide]]
+  id = "guide"
+  title = "使用指南"
+  entry = "docs/guide.md"
+  permissions = ["state:read"]
+
+[plugin_runtime]
+  enabled = true
+  auto_start = true
+
+[huashu]
+  min_directions = 3
+  require_fact_verification = true

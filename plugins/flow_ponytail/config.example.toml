@@ -1,0 +1,7 @@
+[plugin_runtime]
+enabled = true
+auto_start = true
+
+[ponytail]
+default_level = "full"
+debt_marker = "ponytail:"

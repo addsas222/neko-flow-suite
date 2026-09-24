@@ -1,0 +1,18 @@
+{
+  "atlas.title": "工作流图谱",
+  "atlas.subtitle": "先写规格，再校验，最后交付。",
+  "atlas.actions.validate": "校验规格",
+  "atlas.actions.deliver": "交付产物",
+  "atlas.actions.report": "布局诊断",
+  "atlas.actions.mermaid": "转换 Mermaid",
+  "atlas.actions.render": "渲染 Mermaid",
+  "atlas.actions.list": "已保存规格",
+  "atlas.actions.example": "示例规格",
+  "atlas.fields.spec": "图规格 JSON",
+  "atlas.fields.quality": "质量档位",
+  "atlas.fields.name": "产物名称",
+  "atlas.fields.source": "Mermaid 源码",
+  "atlas.messages.empty": "还没有已保存的规格。",
+  "atlas.messages.ready": "规格通过全部工件检查。",
+  "atlas.messages.failed": "校验未通过，请按诊断修 spec 字段。"
+}

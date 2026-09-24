@@ -1,0 +1,12 @@
+<!-- 本文件由 tools/sync_sources.py 从 sources.json 生成，请勿手改。 -->
+
+NOTICE · flow_taste
+
+本插件移植自 taste-skill（https://github.com/Leonxlnx/taste-skill）。
+上游许可证：MIT
+基线引用：c184364c58658b2f131b4ae8bd3d206cabb3deee
+
+flow_taste 的编排与胶水代码：
+Copyright (c) 2026 neko-flow-suite contributors，MIT。
+
+上游项目的版权与商标归其作者所有。

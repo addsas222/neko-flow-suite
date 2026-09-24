@@ -1,0 +1,26 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "N.E.K.O: check flow_eigenflux",
+      "type": "shell",
+      "command": "uv run --with pip neko-plugin check flow_eigenflux",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "N.E.K.O: sync flow_eigenflux",
+      "type": "shell",
+      "command": "uv run --with pip neko-plugin sync flow_eigenflux --clean",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "N.E.K.O: build flow_eigenflux",
+      "type": "shell",
+      "command": "uv run --with pip neko-plugin build flow_eigenflux",
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    }
+  ]
+}

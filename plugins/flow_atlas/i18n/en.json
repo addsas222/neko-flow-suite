@@ -1,0 +1,18 @@
+{
+  "atlas.title": "Workflow Atlas",
+  "atlas.subtitle": "Write the spec, validate it, then deliver.",
+  "atlas.actions.validate": "Validate spec",
+  "atlas.actions.deliver": "Deliver artifact",
+  "atlas.actions.report": "Layout report",
+  "atlas.actions.mermaid": "Convert Mermaid",
+  "atlas.actions.render": "Render Mermaid",
+  "atlas.actions.list": "Saved specs",
+  "atlas.actions.example": "Example spec",
+  "atlas.fields.spec": "Diagram spec JSON",
+  "atlas.fields.quality": "Quality profile",
+  "atlas.fields.name": "Artifact name",
+  "atlas.fields.source": "Mermaid source",
+  "atlas.messages.empty": "No saved specs yet.",
+  "atlas.messages.ready": "Spec passed every artifact check.",
+  "atlas.messages.failed": "Validation failed. Fix the fields named in the diagnostics."
+}

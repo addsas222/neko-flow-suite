@@ -1,0 +1,40 @@
+[plugin]
+  id = "flow_impeccable"
+  name = "Flow Impeccable · 设计命令路由"
+  type = "plugin"
+  description = "把 pbakaus/impeccable 的命令表与有界验证策略移植为可执行插件：一句自然语言路由到对应 reference，并强制「完整构建 → 一次性批量检查 → 一次批量修 → 最多再确认一轮」的有界循环。"
+  short_description = "Impeccable command routing + bounded verification + craft floor."
+  keywords = ["设计", "命令", "路由", "design", "routing", "impeccable", "verify", "UI"]
+  version = "0.1.0"
+  entry = "plugin.plugins.flow_impeccable:FlowImpeccablePlugin"
+
+[plugin.author]
+  name = "N.E.K.O. flow suite"
+
+[plugin.sdk]
+  recommended = ">=0.1.0,<0.2.0"
+  supported = ">=0.1.0,<0.3.0"
+
+[plugin.ui]
+  enabled = true
+
+[[plugin.ui.panel]]
+  id = "main"
+  title = "Flow Impeccable"
+  entry = "ui/panel.tsx"
+  context = "dashboard"
+  permissions = ["state:read", "action:call"]
+
+[[plugin.ui.guide]]
+  id = "guide"
+  title = "使用指南"
+  entry = "docs/guide.md"
+  permissions = ["state:read"]
+
+[plugin_runtime]
+  enabled = true
+  auto_start = true
+
+[impeccable]
+  max_rounds = 2
+  scope = "web"

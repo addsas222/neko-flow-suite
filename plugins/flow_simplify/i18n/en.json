@@ -1,0 +1,14 @@
+{
+  "simplify.title": "Codebase Simplify",
+  "simplify.subtitle": "Prove first, then delete.",
+  "simplify.actions.audit": "Read-only audit",
+  "simplify.actions.findings": "Proof records",
+  "simplify.actions.boundary": "Boundary checklist",
+  "simplify.actions.plan": "Plan a cut",
+  "simplify.actions.apply": "Apply a cut",
+  "simplify.fields.root": "Repository absolute path",
+  "simplify.fields.record": "Proof record JSON",
+  "simplify.fields.authorize": "The user has explicitly authorised this change",
+  "simplify.messages.readOnly": "Survey is read-only and never writes to the target repo.",
+  "simplify.messages.unproved": "Nothing is applied until the proof record is complete."
+}

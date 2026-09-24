@@ -1,0 +1,14 @@
+{
+  "simplify.title": "代码瘦身",
+  "simplify.subtitle": "先证明，再删除。",
+  "simplify.actions.audit": "只读审计",
+  "simplify.actions.findings": "证明记录",
+  "simplify.actions.boundary": "边界清单",
+  "simplify.actions.plan": "规划删除",
+  "simplify.actions.apply": "执行删除",
+  "simplify.fields.root": "仓库绝对路径",
+  "simplify.fields.record": "证明记录 JSON",
+  "simplify.fields.authorize": "用户已明确授权",
+  "simplify.messages.readOnly": "Survey 只读，不写入目标仓库。",
+  "simplify.messages.unproved": "证明了之前不会执行。"
+}

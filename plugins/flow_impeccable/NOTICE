@@ -1,0 +1,12 @@
+<!-- 本文件由 tools/sync_sources.py 从 sources.json 生成，请勿手改。 -->
+
+NOTICE · flow_impeccable
+
+本插件移植自 impeccable（https://github.com/pbakaus/impeccable）。
+上游许可证：Apache-2.0
+基线引用：e0881d2de397d5e9761d7b35ff5017d8f5ebf69b
+
+flow_impeccable 的编排与胶水代码：
+Copyright (c) 2026 neko-flow-suite contributors，MIT。
+
+上游项目的版权与商标归其作者所有。

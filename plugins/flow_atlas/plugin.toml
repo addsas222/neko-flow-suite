@@ -1,0 +1,48 @@
+[plugin]
+id = "flow_atlas"
+name = "工作流图谱"
+description = "把架构、工作流、时序、数据流与生命周期画成可导出的自包含 HTML。先写规格，再校验，最后交付；同一份规格永远产出同一份产物。"
+short_description = "Architecture, workflow, sequence, dataflow and lifecycle diagrams as self-contained HTML."
+keywords = ["图", "diagram", "架构", "architecture", "工作流", "workflow", "时序图", "sequence", "状态机", "state", "可视化", "visualize", "mermaid"]
+version = "0.1.0"
+type = "plugin"
+entry = "plugin.plugins.flow_atlas:FlowAtlasPlugin"
+
+[plugin.author]
+name = "NEKO Flow Pack"
+
+[plugin.sdk]
+recommended = ">=0.1.0,<0.2.0"
+supported = ">=0.1.0,<0.3.0"
+
+[plugin.i18n]
+default_locale = "zh-CN"
+locales_dir = "i18n"
+
+[plugin.store]
+enabled = true
+
+[plugin.ui]
+enabled = true
+
+[[plugin.ui.panel]]
+id = "atlas"
+title = "工作流图谱"
+entry = "ui/panel.tsx"
+context = "atlas"
+permissions = ["state:read", "action:call", "config:read"]
+
+[[plugin.ui.guide]]
+id = "quickstart"
+title = "创作契约"
+entry = "docs/quickstart.md"
+permissions = ["state:read"]
+
+[plugin_runtime]
+enabled = true
+auto_start = true
+
+[atlas]
+default_quality = "showcase"
+animation = "none"
+max_preview_nodes = 120

@@ -1,0 +1,40 @@
+[plugin]
+  id = "flow_taste"
+  name = "Flow Taste · 反 AI 味设计门禁"
+  type = "plugin"
+  description = "把 Leonxlnx/taste-skill 的反默认审美规则做成可执行门禁：先推断 brief 出单行 design read，再定三旋钮，最后按硬规则扫描 HTML/CSS/TSX，命中 block 级即不许交付。"
+  short_description = "Anti-slop frontend gates: design read, three dials, hard rule scan."
+  keywords = ["设计", "前端", "反AI味", "design", "frontend", "lint", "taste", "UI"]
+  version = "0.1.0"
+  entry = "plugin.plugins.flow_taste:FlowTastePlugin"
+
+[plugin.author]
+  name = "N.E.K.O. flow suite"
+
+[plugin.sdk]
+  recommended = ">=0.1.0,<0.2.0"
+  supported = ">=0.1.0,<0.3.0"
+
+[plugin.ui]
+  enabled = true
+
+[[plugin.ui.panel]]
+  id = "main"
+  title = "Flow Taste"
+  entry = "ui/panel.tsx"
+  context = "dashboard"
+  permissions = ["state:read", "action:call"]
+
+[[plugin.ui.guide]]
+  id = "guide"
+  title = "使用指南"
+  entry = "docs/guide.md"
+  permissions = ["state:read"]
+
+[plugin_runtime]
+  enabled = true
+  auto_start = true
+
+[taste]
+  default_use_case = "landing-saas"
+  block_on = ["block", "demote"]

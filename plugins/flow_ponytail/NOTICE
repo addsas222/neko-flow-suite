@@ -1,0 +1,12 @@
+<!-- 本文件由 tools/sync_sources.py 从 sources.json 生成，请勿手改。 -->
+
+NOTICE · flow_ponytail
+
+本插件移植自 ponytail（https://github.com/DietrichGebert/ponytail）。
+上游许可证：MIT
+基线引用：fetched 2026-09-24 via src/ponytail_README.md
+
+flow_ponytail 的编排与胶水代码：
+Copyright (c) 2026 neko-flow-suite contributors，MIT。
+
+上游项目的版权与商标归其作者所有。

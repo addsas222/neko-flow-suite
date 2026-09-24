@@ -1,0 +1,8 @@
+[plugin_runtime]
+enabled = true
+auto_start = true
+
+[atlas]
+default_quality = "showcase"
+animation = "none"
+max_preview_nodes = 120

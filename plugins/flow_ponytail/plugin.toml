@@ -1,0 +1,47 @@
+[plugin]
+id = "flow_ponytail"
+name = "极简教练"
+description = "面向外部编码 Agent 的过度设计审查：YAGNI 阶梯、删除清单、强度等级与技术债台账；并导出可粘贴到 Cline / Claude Code / Codex 的规则集。"
+short_description = "Make your coding agent think like the laziest senior dev in the room."
+keywords = ["极简", "minimal", "过度设计", "over-engineering", "YAGNI", "删除", "delete", "规则", "ruleset", "AGENTS.md", "CLAUDE.md", "技术债", "debt"]
+version = "0.1.0"
+type = "plugin"
+entry = "plugin.plugins.flow_ponytail:FlowPonytailPlugin"
+
+[plugin.author]
+name = "NEKO Flow Pack"
+
+[plugin.sdk]
+recommended = ">=0.1.0,<0.2.0"
+supported = ">=0.1.0,<0.3.0"
+
+[plugin.i18n]
+default_locale = "zh-CN"
+locales_dir = "i18n"
+
+[plugin.store]
+enabled = true
+
+[plugin.ui]
+enabled = true
+
+[[plugin.ui.panel]]
+id = "ponytail"
+title = "极简教练"
+entry = "ui/panel.tsx"
+context = "ponytail"
+permissions = ["state:read", "action:call", "config:read"]
+
+[[plugin.ui.guide]]
+id = "quickstart"
+title = "更便宜的一级"
+entry = "docs/quickstart.md"
+permissions = ["state:read"]
+
+[plugin_runtime]
+enabled = true
+auto_start = true
+
+[ponytail]
+default_level = "full"
+debt_marker = "ponytail:"

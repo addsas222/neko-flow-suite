@@ -1,0 +1,26 @@
+N.E.K.O. flow suite — NOTICE
+
+本仓库的编排与胶水代码（tools/ 下的脚本、各插件的 _runtime 与 __init__、
+README 等）以 MIT 发布，见 LICENSE。
+
+各插件的规则层移植自第三方开源项目，其许可证与版权归原作者所有。
+逐条来源见 SOURCES.md 以及每个插件目录下的 SOURCE.md / NOTICE。
+
+MIT 许可的上游：
+  - tt-a1i/archify                -> plugins/flow_atlas
+  - tt-a1i/simplify-codebase      -> plugins/flow_simplify
+  - DietrichGebert/ponytail       -> plugins/flow_ponytail
+  - Leonxlnx/taste-skill           -> plugins/flow_taste
+  - alchaincyf/huashu-design       -> plugins/flow_huashu
+  - VoltAgent/awesome-design-md    -> plugins/flow_designmd
+
+Apache-2.0 许可的上游：
+  - volcengine/OpenViking          -> plugins/flow_viking
+  - pbakaus/impeccable            -> plugins/flow_impeccable
+
+许可证待确认、暂未发布移植代码的上游：
+  - evomap                        -> plugins/flow_evomap
+  - phronesis-io/eigenflux        -> plugins/flow_eigenflux
+
+第三方商标与品牌资产不在本仓库内重分发。各品牌的 DESIGN.md 语料版权归
+其品牌与原始分析作者所有；flow_designmd 只提供索引与导出工具。

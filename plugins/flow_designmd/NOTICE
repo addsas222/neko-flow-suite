@@ -1,0 +1,12 @@
+<!-- 本文件由 tools/sync_sources.py 从 sources.json 生成，请勿手改。 -->
+
+NOTICE · flow_designmd
+
+本插件移植自 awesome-design-md（https://github.com/VoltAgent/awesome-design-md）。
+上游许可证：MIT
+基线引用：f6961238d5cddcf8042a74a70fc400ec67181abb
+
+flow_designmd 的编排与胶水代码：
+Copyright (c) 2026 neko-flow-suite contributors，MIT。
+
+上游项目的版权与商标归其作者所有。

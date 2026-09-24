@@ -1,0 +1,14 @@
+{
+  "ponytail.title": "Lazy Senior Dev",
+  "ponytail.subtitle": "The best code is the code you never wrote.",
+  "ponytail.actions.review": "Review diff",
+  "ponytail.actions.audit": "Audit repo",
+  "ponytail.actions.debt": "Debt ledger",
+  "ponytail.actions.ladder": "YAGNI ladder",
+  "ponytail.actions.ruleset": "Ruleset",
+  "ponytail.actions.intensity": "Intensity",
+  "ponytail.fields.diff": "diff text",
+  "ponytail.fields.root": "repository path",
+  "ponytail.fields.level": "intensity level",
+  "ponytail.messages.safetyKept": "Keep every safety guard while deleting. Turning one off is its own authorised objective."
+}
