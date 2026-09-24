@@ -1,0 +1,19 @@
+{
+  "viking.title": "Context Database",
+  "viking.subtitle": "One virtual filesystem for everything the agent knows.",
+  "viking.actions.ls": "List directory",
+  "viking.actions.tree": "Directory tree",
+  "viking.actions.read": "Read",
+  "viking.actions.write": "Write",
+  "viking.actions.mkdir": "Make directory",
+  "viking.actions.grep": "Grep",
+  "viking.actions.find": "Semantic find",
+  "viking.actions.commit": "Commit memory",
+  "viking.actions.skills": "Skills",
+  "viking.actions.summary": "Whole-tree summaries",
+  "viking.actions.stats": "Stats",
+  "viking.fields.path": "viking:// path",
+  "viking.fields.layer": "layer",
+  "viking.fields.content": "content",
+  "viking.messages.empty": "The tree is empty. Write one entry first."
+}

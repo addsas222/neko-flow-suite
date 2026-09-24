@@ -1,0 +1,48 @@
+[plugin]
+id = "flow_viking"
+name = "上下文数据库"
+description = "一套 viking:// 虚拟文件系统式的上下文数据库：L0/L1/L2 分层记忆，ls / tree / read / write / grep / find，每个目录都带生成的摘要，可以先扫摘要再决定读什么。"
+short_description = "Self-evolving context database: one virtual filesystem for everything the agent knows."
+keywords = ["记忆", "memory", "上下文", "context", "RAG", "知识库", "knowledge", "viking", "检索", "retrieval", "摘要", "summary", "技能", "skills"]
+version = "0.1.0"
+type = "plugin"
+entry = "plugin.plugins.flow_viking:FlowVikingPlugin"
+
+[plugin.author]
+name = "NEKO Flow Pack"
+
+[plugin.sdk]
+recommended = ">=0.1.0,<0.2.0"
+supported = ">=0.1.0,<0.3.0"
+
+[plugin.i18n]
+default_locale = "zh-CN"
+locales_dir = "i18n"
+
+[plugin.store]
+enabled = true
+
+[plugin.ui]
+enabled = true
+
+[[plugin.ui.panel]]
+id = "viking"
+title = "上下文数据库"
+entry = "ui/panel.tsx"
+context = "viking"
+permissions = ["state:read", "action:call", "config:read"]
+
+[[plugin.ui.guide]]
+id = "quickstart"
+title = "先扫摘要"
+entry = "docs/quickstart.md"
+permissions = ["state:read"]
+
+[plugin_runtime]
+enabled = true
+auto_start = true
+
+[viking]
+root = "viking://"
+default_read_layer = "l1"
+max_depth = 3

@@ -1,0 +1,8 @@
+[plugin_runtime]
+enabled = true
+auto_start = true
+
+[viking]
+root = "viking://"
+default_read_layer = "l1"
+max_depth = 3

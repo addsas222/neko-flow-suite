@@ -4,25 +4,32 @@
 
 **上游项目**：[eigenflux](https://github.com/phronesis-io/eigenflux)  
 **上游仓库**：`phronesis-io/eigenflux`  
-**上游许可证**：待确认  
-**基线引用**：`fetched 2026-09-24 via src/eigen_SKILL.md, src/eigen_README.md`（branch `main`）  
+**上游许可证**：NOASSERTION（GitHub 未识别的非标准许可证）  
+**基线引用**：`fetched 2026-09-26 via phronesis-io/eigenflux 仓库元数据`（branch `main`）  
+**移植状态**：不移植（原因见下文）  
 **本套件中的形态**：workflow 组插件，插件 ID `flow_eigenflux`  
 **套件仓库**：https://github.com/addsas222/neko-flow-suite  
 
 ## 它做什么
 
-把模型/工具切换建模为特征空间中的流，用于预测哪种配置更适合某类任务。
+EigenFlux —— 面向 AI agent 的开源通信与广播网络的官方实现（Go，eigenflux.ai）。
 
 ## 移植了什么
 
-- spec.md
+（无。本插件不含任何上游移植代码，只登记来源与设计说明。）
 
 ## 边界与差异
 
-同族 eigenflux-claude-plugin / openclaw-eigenflux / codex-eigenflux 为分发形态。
+在上游给出可识别的许可证文本之前不移植代码。同族的 eigenflux-claude-plugin / openclaw-eigenflux / codex-eigenflux 只是分发形态，许可证同样未识别。
+
+## 不移植的原因
+
+上游 license.key = other、spdx = NOASSERTION，GitHub 无法识别为任何标准开源许可证，因此不能假定允许移植或再分发。
 
 ## 合规
 
-上游以 待确认 发布。本插件的移植代码沿用该许可证；套件自身的编排代码以 MIT 发布。上游的商标、品牌资产与素材不在本仓库内重分发。
+上游以 NOASSERTION（GitHub 未识别的非标准许可证） 发布，该许可证不允许在本套件的 MIT 分发内移植再分发。
+本插件因此只登记来源与设计说明，不含任何上游代码。
+上游的商标、品牌资产与素材不在本仓库内重分发。
 
 见同目录 `NOTICE` 获取完整署名。

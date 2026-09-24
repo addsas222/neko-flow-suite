@@ -20,6 +20,7 @@ GROUPS = (
 )
 
 
+
 def main(argv: list[str]) -> int:
     registry = json.loads(REGISTRY.read_text(encoding="utf-8"))
     suite = registry["suite"]
@@ -33,8 +34,8 @@ def main(argv: list[str]) -> int:
         "",
         suite["policy"],
         "",
-        "| 插件 | 上游 | 许可证 | 基线引用 | star | 汇总 |",
-        "|---|---|---|---|---|---|",
+        "| 插件 | 上游 | 许可证 | 状态 | 基线引用 | star | 汇总 |",
+        "|---|---|---|---|---|---|---|",
     ]
 
     for key, _title in GROUPS:
@@ -43,9 +44,10 @@ def main(argv: list[str]) -> int:
             name = entry.get("upstream_repo") or "（待确认）"
             ref = entry.get("ref", "")
             stars = f"{entry['stars']:,}" if entry.get("stars") else "—"
+            status = "不移植" if entry.get("porting_status") == "blocked" else "已移植"
             lines.append(
                 f"| `{entry['plugin']}` | [{name}]({url}) | {entry.get('license', '待确认')} "
-                f"| `{ref}` | {stars} | {entry.get('summary', '')} |"
+                f"| {status} | `{ref}` | {stars} | {entry.get('summary', '')} |"
             )
 
     lines += ["", "## 逐条详情", ""]
@@ -59,6 +61,12 @@ def main(argv: list[str]) -> int:
                 f"- 上游：[{entry.get('upstream_repo') or '（待确认）'}]"
                 f"({entry.get('upstream_url') or '（待确认）'})",
                 f"- 许可证：{entry.get('license', '待确认')}",
+                f"- 移植状态："
+                + (
+                    f"不移植 —— {entry['porting_block']}"
+                    if entry.get("porting_status") == "blocked"
+                    else "已移植"
+                ),
                 f"- 基线引用：`{entry.get('ref', '')}`"
                 + (f"（branch `{entry['branch']}`）" if entry.get("branch") else ""),
                 f"- 分组：{entry['group']}",
@@ -68,7 +76,10 @@ def main(argv: list[str]) -> int:
                 "移植清单：",
                 "",
             ]
-            lines += [f"  - {item}" for item in entry.get("ported", [])]
+            if entry.get("porting_status") == "blocked":
+                lines += ["  - （无。只登记来源与设计说明，不含上游代码。）"]
+            else:
+                lines += [f"  - {item}" for item in entry.get("ported", [])]
             lines += ["", f"边界与差异：{entry.get('notes', '')}", ""]
 
     lines += [
@@ -78,7 +89,12 @@ def main(argv: list[str]) -> int:
         "  awesome-design-md）：保留版权声明与许可证声明即可分发与修改。",
         "- Apache-2.0（OpenViking、impeccable）：额外要求声明修改、保留 NOTICE、",
         "  并在改动文件里标注。已在各插件 `NOTICE` 中落实。",
-        "- 待确认（evomap、eigenflux）：确认上游仓库与许可证前，不发布其移植代码。",
+        "- GPL-3.0（evomap / EvoMap/evolver）：强 copyleft，衍生作品必须以 GPL-3.0",
+        "  整体分发，与本套件的 MIT 冲突。**不移植**；若要引入须拆为独立 GPL-3.0 仓库，",
+        "  并从本套件的 MIT 分发中移除。",
+        "- NOASSERTION（eigenflux / phronesis-io/eigenflux）：GitHub 未识别为任何标准",
+        "  开源许可证，不能假定允许移植或再分发。**不移植**，待上游给出明确许可证文本后",
+        "  再评估。",
         "",
     ]
 

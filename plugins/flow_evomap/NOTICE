@@ -2,9 +2,9 @@
 
 NOTICE · flow_evomap
 
-本插件移植自 evomap（(待确认)）。
-上游许可证：待确认
-基线引用：fetched 2026-09-24
+本插件参考 evomap（https://github.com/EvoMap/evolver）的设计，但不包含其任何代码，因此不构成衍生作品。
+上游许可证：GPL-3.0
+基线引用：fetched 2026-09-26 via EvoMap/evolver README 与仓库元数据
 
 flow_evomap 的编排与胶水代码：
 Copyright (c) 2026 neko-flow-suite contributors，MIT。

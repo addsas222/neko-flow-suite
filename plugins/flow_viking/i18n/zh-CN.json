@@ -1,0 +1,19 @@
+{
+  "viking.title": "上下文数据库",
+  "viking.subtitle": "一套虚拟文件系统，装下 Agent 知道的一切。",
+  "viking.actions.ls": "列出目录",
+  "viking.actions.tree": "目录树",
+  "viking.actions.read": "读取",
+  "viking.actions.write": "写入",
+  "viking.actions.mkdir": "创建目录",
+  "viking.actions.grep": "检索文本",
+  "viking.actions.find": "语义查找",
+  "viking.actions.commit": "提交记忆",
+  "viking.actions.skills": "技能库",
+  "viking.actions.summary": "全树摘要",
+  "viking.actions.stats": "统计",
+  "viking.fields.path": "viking:// 路径",
+  "viking.fields.layer": "层",
+  "viking.fields.content": "内容",
+  "viking.messages.empty": "树还是空的。先写入一条内容。"
+}

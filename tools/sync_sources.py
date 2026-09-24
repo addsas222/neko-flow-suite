@@ -34,6 +34,8 @@ def render_source_md(entry: dict, suite: dict) -> str:
     ref = entry.get("ref", "")
     branch = entry.get("branch", "")
     stars = entry.get("stars")
+    lic = entry.get("license", "待确认")
+    blocked = entry.get("porting_status") == "blocked"
     lines = [
         HEADER,
         "",
@@ -41,11 +43,15 @@ def render_source_md(entry: dict, suite: dict) -> str:
         "",
         f"**上游项目**：[{entry['key']}]({url})  ",
         f"**上游仓库**：`{entry.get('upstream_repo') or '(待确认)'}`  ",
-        f"**上游许可证**：{entry.get('license', '待确认')}  ",
+        f"**上游许可证**：{lic}  ",
         f"**基线引用**：`{ref}`" + (f"（branch `{branch}`）" if branch else "") + "  ",
     ]
     if stars:
         lines.append(f"**上游 star 数**：{stars:,}（采集于 2026-09-24）  ")
+    lines.append(
+        "**移植状态**："
+        + ("不移植（原因见下文）  " if blocked else "已移植  ")
+    )
     lines += [
         f"**本套件中的形态**：{entry['group']} 组插件，插件 ID `{entry['plugin']}`  ",
         f"**套件仓库**：{suite['repo']}  ",
@@ -57,17 +63,31 @@ def render_source_md(entry: dict, suite: dict) -> str:
         "## 移植了什么",
         "",
     ]
-    lines += [f"- {item}" for item in entry.get("ported", [])]
+    if blocked:
+        lines.append("（无。本插件不含任何上游移植代码，只登记来源与设计说明。）")
+    else:
+        lines += [f"- {item}" for item in entry.get("ported", [])]
     lines += [
         "",
         "## 边界与差异",
         "",
         entry.get("notes", ""),
-        "",
-        "## 合规",
-        "",
-        f"上游以 {entry.get('license', '待确认')} 发布。本插件的移植代码沿用该许可证；"
-        "套件自身的编排代码以 MIT 发布。上游的商标、品牌资产与素材不在本仓库内重分发。",
+    ]
+    if blocked:
+        lines += ["", "## 不移植的原因", "", entry.get("porting_block", "")]
+    lines += ["", "## 合规", ""]
+    if blocked:
+        lines += [
+            f"上游以 {lic} 发布，该许可证不允许在本套件的 MIT 分发内移植再分发。",
+            "本插件因此只登记来源与设计说明，不含任何上游代码。",
+        ]
+    else:
+        lines += [
+            f"上游以 {lic} 发布。本插件的移植代码沿用该许可证；",
+            "套件自身的编排代码以 MIT 发布。",
+        ]
+    lines += [
+        "上游的商标、品牌资产与素材不在本仓库内重分发。",
         "",
         "见同目录 `NOTICE` 获取完整署名。",
         "",
@@ -77,23 +97,31 @@ def render_source_md(entry: dict, suite: dict) -> str:
 
 def render_notice(entry: dict, suite: dict) -> str:
     url = entry.get("upstream_url") or "(待确认)"
-    return "\n".join(
-        [
-            HEADER,
-            "",
-            f"NOTICE · {entry['plugin']}",
-            "",
-            f"本插件移植自 {entry['key']}（{url}）。",
-            f"上游许可证：{entry.get('license', '待确认')}",
-            f"基线引用：{entry.get('ref', '')}",
-            "",
-            f"{entry['plugin']} 的编排与胶水代码：",
-            f"Copyright (c) 2026 {suite['repo'].rsplit('/', 1)[-1]} contributors，MIT。",
-            "",
-            "上游项目的版权与商标归其作者所有。",
-            "",
+    blocked = entry.get("porting_status") == "blocked"
+    lines = [
+        HEADER,
+        "",
+        f"NOTICE · {entry['plugin']}",
+        "",
+    ]
+    if blocked:
+        lines += [
+            f"本插件参考 {entry['key']}（{url}）的设计，"
+            "但不包含其任何代码，因此不构成衍生作品。",
         ]
-    )
+    else:
+        lines.append(f"本插件移植自 {entry['key']}（{url}）。")
+    lines += [
+        f"上游许可证：{entry.get('license', '待确认')}",
+        f"基线引用：{entry.get('ref', '')}",
+        "",
+        f"{entry['plugin']} 的编排与胶水代码：",
+        f"Copyright (c) 2026 {suite['repo'].rsplit('/', 1)[-1]} contributors，MIT。",
+        "",
+        "上游项目的版权与商标归其作者所有。",
+        "",
+    ]
+    return "\n".join(lines)
 
 
 def main(argv: list[str]) -> int:
