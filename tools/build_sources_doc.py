@@ -44,7 +44,13 @@ def main(argv: list[str]) -> int:
             name = entry.get("upstream_repo") or "（待确认）"
             ref = entry.get("ref", "")
             stars = f"{entry['stars']:,}" if entry.get("stars") else "—"
-            status = "不移植" if entry.get("porting_status") == "blocked" else "已移植"
+            st = entry.get("porting_status")
+            if st == "blocked":
+                status = "不移植"
+            elif st == "isolated":
+                status = "已移植（需单独分发）"
+            else:
+                status = "已移植"
             lines.append(
                 f"| `{entry['plugin']}` | [{name}]({url}) | {entry.get('license', '待确认')} "
                 f"| {status} | `{ref}` | {stars} | {entry.get('summary', '')} |"
@@ -76,8 +82,12 @@ def main(argv: list[str]) -> int:
                 "移植清单：",
                 "",
             ]
-            if entry.get("porting_status") == "blocked":
+            st = entry.get("porting_status")
+            if st == "blocked":
                 lines += ["  - （无。只登记来源与设计说明，不含上游代码。）"]
+            elif st == "isolated":
+                lines += [f"  - {item}" for item in entry.get("ported", [])]
+                lines += ["", f"分发限制：{entry.get('porting_warning', '')}"]
             else:
                 lines += [f"  - {item}" for item in entry.get("ported", [])]
             lines += ["", f"边界与差异：{entry.get('notes', '')}", ""]
@@ -92,6 +102,8 @@ def main(argv: list[str]) -> int:
         "- GPL-3.0（evomap / EvoMap/evolver）：强 copyleft，衍生作品必须以 GPL-3.0",
         "  整体分发，与本套件的 MIT 冲突。**不移植**；若要引入须拆为独立 GPL-3.0 仓库，",
         "  并从本套件的 MIT 分发中移除。",
+        "  已移植，但该插件的移植代码沿用 GPL-3.0，必须单独以 GPL-3.0 发布，",
+        "  不并入本套件的 MIT 一体分发。",
         "- NOASSERTION（eigenflux / phronesis-io/eigenflux）：GitHub 未识别为任何标准",
         "  开源许可证，不能假定允许移植或再分发。**不移植**，待上游给出明确许可证文本后",
         "  再评估。",

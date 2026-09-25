@@ -18,8 +18,11 @@ Apache-2.0 许可的上游：
   - volcengine/OpenViking          -> plugins/flow_viking
   - pbakaus/impeccable            -> plugins/flow_impeccable
 
-许可证待确认、暂未发布移植代码的上游：
-  - evomap                        -> plugins/flow_evomap
+GPL-3.0 许可的上游。其移植代码必须以 GPL-3.0 单独分发，不随本仓库的
+MIT 一体分发；若与本仓库其余部分打包成单一作品，整体须为 GPL-3.0：
+  - EvoMap/evolver                -> plugins/flow_evomap
+
+许可证无法识别（GitHub API 返回 NOASSERTION）、未移植代码的上游：
   - phronesis-io/eigenflux        -> plugins/flow_eigenflux
 
 第三方商标与品牌资产不在本仓库内重分发。各品牌的 DESIGN.md 语料版权归

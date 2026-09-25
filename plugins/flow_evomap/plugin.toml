@@ -1,0 +1,48 @@
+[plugin]
+id = "flow_evomap"
+name = "进化记忆"
+description = "接入 EvoMap A2A 记忆协议的受控接入面：先恢复节点身份，只在用户明确要求时才注册；记录与召回前强制脱敏；同时提供本地 / Mem0 / Zep / Letta / Cognee / MemOS 等后端一览。"
+short_description = "Controlled EvoMap A2A memory surface with mandatory redaction."
+keywords = ["记忆", "memory", "EvoMap", "A2A", "进化", "evolution", "脱敏", "redact", "隐私", "privacy", "Mem0", "Zep", "Letta", "Cognee", "MemOS"]
+version = "0.1.0"
+type = "plugin"
+entry = "plugin.plugins.flow_evomap:FlowEvomapPlugin"
+
+[plugin.author]
+name = "NEKO Flow Pack"
+
+[plugin.sdk]
+recommended = ">=0.1.0,<0.2.0"
+supported = ">=0.1.0,<0.3.0"
+
+[plugin.i18n]
+default_locale = "zh-CN"
+locales_dir = "i18n"
+
+[plugin.store]
+enabled = true
+
+[plugin.ui]
+enabled = true
+
+[[plugin.ui.panel]]
+id = "evomap"
+title = "进化记忆"
+entry = "ui/panel.tsx"
+context = "evomap"
+permissions = ["state:read", "action:call", "config:read"]
+
+[[plugin.ui.guide]]
+id = "quickstart"
+title = "先恢复，再注册"
+entry = "docs/quickstart.md"
+permissions = ["state:read"]
+
+[plugin_runtime]
+enabled = true
+auto_start = false
+
+[evomap]
+hub = "https://evomap.ai"
+strict_redaction = true
+allow_remote = false

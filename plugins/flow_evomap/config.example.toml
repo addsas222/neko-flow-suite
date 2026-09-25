@@ -1,0 +1,8 @@
+[plugin_runtime]
+enabled = true
+auto_start = false
+
+[evomap]
+hub = "https://evomap.ai"
+strict_redaction = true
+allow_remote = false

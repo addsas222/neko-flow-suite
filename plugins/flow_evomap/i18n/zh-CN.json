@@ -1,0 +1,14 @@
+{
+  "evomap.title": "进化记忆",
+  "evomap.subtitle": "先恢复节点身份；只有在用户明确要求时才注册。",
+  "evomap.actions.status": "身份状态",
+  "evomap.actions.recover": "恢复身份",
+  "evomap.actions.record": "记录记忆",
+  "evomap.actions.recall": "召回记忆",
+  "evomap.actions.backends": "后端一览",
+  "evomap.actions.redact": "脱敏预览",
+  "evomap.actions.endpoints": "端点清单",
+  "evomap.fields.text": "内容",
+  "evomap.fields.query": "查询",
+  "evomap.messages.readOnly": "读参考文档不授权任何动作；只有当前对话里的直接指令才授权。"
+}

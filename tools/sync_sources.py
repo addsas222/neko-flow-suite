@@ -36,6 +36,7 @@ def render_source_md(entry: dict, suite: dict) -> str:
     stars = entry.get("stars")
     lic = entry.get("license", "待确认")
     blocked = entry.get("porting_status") == "blocked"
+    isolated = entry.get("porting_status") == "isolated"
     lines = [
         HEADER,
         "",
@@ -48,10 +49,13 @@ def render_source_md(entry: dict, suite: dict) -> str:
     ]
     if stars:
         lines.append(f"**上游 star 数**：{stars:,}（采集于 2026-09-24）  ")
-    lines.append(
-        "**移植状态**："
-        + ("不移植（原因见下文）  " if blocked else "已移植  ")
-    )
+    if blocked:
+        status_line = "不移植（原因见下文）"
+    elif isolated:
+        status_line = "已移植，但须单独以 " + lic + " 分发（见下文）"
+    else:
+        status_line = "已移植"
+    lines.append(f"**移植状态**：{status_line}  ")
     lines += [
         f"**本套件中的形态**：{entry['group']} 组插件，插件 ID `{entry['plugin']}`  ",
         f"**套件仓库**：{suite['repo']}  ",
@@ -73,13 +77,27 @@ def render_source_md(entry: dict, suite: dict) -> str:
         "",
         entry.get("notes", ""),
     ]
-    if blocked:
+    if isolated:
+        lines += [
+            "",
+            "## 分发限制",
+            "",
+            entry.get("porting_warning", ""),
+            "",
+            "该插件的移植代码以上游许可证单独发布，不随本套件的 MIT 一体分发。",
+        ]
+    elif blocked:
         lines += ["", "## 不移植的原因", "", entry.get("porting_block", "")]
     lines += ["", "## 合规", ""]
     if blocked:
         lines += [
             f"上游以 {lic} 发布，该许可证不允许在本套件的 MIT 分发内移植再分发。",
             "本插件因此只登记来源与设计说明，不含任何上游代码。",
+        ]
+    elif isolated:
+        lines += [
+            f"上游以 {lic} 发布。本插件的移植代码沿用 {lic}，",
+            f"必须以 {lic} 单独分发，不并入本套件的 MIT 分发。",
         ]
     else:
         lines += [
@@ -98,6 +116,8 @@ def render_source_md(entry: dict, suite: dict) -> str:
 def render_notice(entry: dict, suite: dict) -> str:
     url = entry.get("upstream_url") or "(待确认)"
     blocked = entry.get("porting_status") == "blocked"
+    isolated = entry.get("porting_status") == "isolated"
+    lic_n = entry.get("license", "待确认")
     lines = [
         HEADER,
         "",
@@ -112,11 +132,25 @@ def render_notice(entry: dict, suite: dict) -> str:
     else:
         lines.append(f"本插件移植自 {entry['key']}（{url}）。")
     lines += [
-        f"上游许可证：{entry.get('license', '待确认')}",
+        f"上游许可证：{lic_n}",
         f"基线引用：{entry.get('ref', '')}",
         "",
         f"{entry['plugin']} 的编排与胶水代码：",
-        f"Copyright (c) 2026 {suite['repo'].rsplit('/', 1)[-1]} contributors，MIT。",
+    ]
+    if isolated:
+        lines.append(
+            f"Copyright (c) 2026 {suite['repo'].rsplit('/', 1)[-1]} contributors，"
+            f"MIT（仅编排与胶水部分）。"
+        )
+        lines.append(
+            f"移植代码部分：Copyright 归 {entry.get('upstream_repo', 'upstream')} 及其贡献者所有，"
+            f"以 {lic_n} 发布，必须以 {lic_n} 单独分发。"
+        )
+    else:
+        lines.append(
+            f"Copyright (c) 2026 {suite['repo'].rsplit('/', 1)[-1]} contributors，MIT。"
+        )
+    lines += [
         "",
         "上游项目的版权与商标归其作者所有。",
         "",
