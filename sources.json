@@ -108,7 +108,7 @@
       "porting_status": "blocked",
       "porting_block": "上游 license.key = other、spdx = NOASSERTION，GitHub 无法识别为任何标准开源许可证，因此不能假定允许移植或再分发。",
       "ported": [],
-      "notes": "在上游给出可识别的许可证文本之前不移植代码。同族的 eigenflux-claude-plugin / openclaw-eigenflux / codex-eigenflux 只是分发形态，许可证同样未识别。"
+      "notes": "在上游给出可识别的许可证文本之前不移植代码。同族的 eigenflux-claude-plugin / openclaw-eigenflux / codex-eigenflux 只是分发形态，许可证同样未识别。本目录仍以合法清单 plugin.toml 注册（否则宿主无法加载），但插件被关成 passive = true（不参与 Agent 分派）与 auto_start = false（不随宿主启动）；即便手动启动，唯一入口也只返回 Err 说明不可用。目录内没有任何上游代码。"
     }
   ],
   "design_sources": [

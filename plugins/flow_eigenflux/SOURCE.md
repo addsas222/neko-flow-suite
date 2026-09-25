@@ -16,11 +16,11 @@ EigenFlux —— 面向 AI agent 的开源通信与广播网络的官方实现�
 
 ## 移植了什么
 
-（无。本插件不含任何上游移植代码，只登记来源与设计说明。）
+（无。本插件不含任何上游移植代码。）
 
 ## 边界与差异
 
-在上游给出可识别的许可证文本之前不移植代码。同族的 eigenflux-claude-plugin / openclaw-eigenflux / codex-eigenflux 只是分发形态，许可证同样未识别。
+在上游给出可识别的许可证文本之前不移植代码。同族的 eigenflux-claude-plugin / openclaw-eigenflux / codex-eigenflux 只是分发形态，许可证同样未识别。本目录仍以合法清单 plugin.toml 注册（否则宿主无法加载），但插件被关成 passive = true（不参与 Agent 分派）与 auto_start = false（不随宿主启动）；即便手动启动，唯一入口也只返回 Err 说明不可用。目录内没有任何上游代码。
 
 ## 不移植的原因
 
@@ -29,7 +29,7 @@ EigenFlux —— 面向 AI agent 的开源通信与广播网络的官方实现�
 ## 合规
 
 上游以 NOASSERTION（GitHub 未识别的非标准许可证） 发布，该许可证不允许在本套件的 MIT 分发内移植再分发。
-本插件因此只登记来源与设计说明，不含任何上游代码。
+本插件因此只登记来源，并以禁用态注册为一个合法插件，不含任何上游代码。
 上游的商标、品牌资产与素材不在本仓库内重分发。
 
 见同目录 `NOTICE` 获取完整署名。

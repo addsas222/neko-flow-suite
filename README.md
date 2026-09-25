@@ -11,8 +11,8 @@
 | `flow_simplify` | workflow | [tt-a1i/simplify-codebase](https://github.com/tt-a1i/simplify-codebase) | MIT | 用可度量复用度替代「感觉重复」的代码精简 |
 | `flow_ponytail` | workflow | [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) | MIT | 「最短实现」剃刀式简化约束 |
 | `flow_viking` | workflow | [volcengine/OpenViking](https://github.com/volcengine/OpenViking) | Apache-2.0 | 面向 Agent 的上下文/记忆分层抽象 |
-| `flow_evomap` | workflow | 待确认 | 待确认 | 能力演化图谱 |
-| `flow_eigenflux` | workflow | [phronesis-io/eigenflux](https://github.com/phronesis-io/eigenflux) | 待确认 | 模型/工具切换的特征空间建模 |
+| `flow_evomap` | workflow | [EvoMap/evolver](https://github.com/EvoMap/evolver) | GPL-3.0（需单独分发） | GEP 驱动的 agent 自演化引擎：Gene / Capsule / Event 三种可审计工件 |
+| `flow_eigenflux` | workflow | [phronesis-io/eigenflux](https://github.com/phronesis-io/eigenflux) | NOASSERTION（未移植） | 上游许可证无法识别，只登记来源，入口一律返回不可用 |
 | `flow_taste` | design | [Leonxlnx/taste-skill](https://github.com/Leonxlnx/taste-skill) | MIT | 反 AI 味设计门禁：design read + 三旋钮 + 硬规则扫描 |
 | `flow_impeccable` | design | [pbakaus/impeccable](https://github.com/pbakaus/impeccable) | Apache-2.0 | 设计命令路由 + 有界验证 + craft floor |
 | `flow_huashu` | design | [alchaincyf/huashu-design](https://github.com/alchaincyf/huashu-design) | MIT | 三方向硬门 + 事实验证 + 工作室角色轮换 |

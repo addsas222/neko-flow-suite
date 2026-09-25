@@ -1,0 +1,25 @@
+[plugin]
+id = "flow_eigenflux"
+name = "EigenFlux 广播（未移植）"
+description = "上游 phronesis-io/eigenflux 的许可证为 NOASSERTION（GitHub 无法识别的非标准许可证），本套件不移植、不分发其任何代码。此插件只作为来源登记存在，唯一入口仅说明不可用原因。"
+short_description = "Placeholder only: upstream license is NOASSERTION, nothing was ported."
+keywords = ["EigenFlux", "广播", "broadcast", "未移植", "unavailable"]
+version = "0.1.0"
+type = "plugin"
+entry = "plugin.plugins.flow_eigenflux:FlowEigenfluxPlugin"
+passive = true
+
+[plugin.author]
+name = "NEKO Flow Pack"
+
+[plugin.sdk]
+recommended = ">=0.1.0,<0.2.0"
+supported = ">=0.1.0,<0.3.0"
+
+[plugin_runtime]
+# 这个插件没有任何可执行功能，因此三重关死：
+#   passive = true          → 不参与 Agent 分派，Agent 不会选中一个必然失败的入口
+#   auto_start = false      → N.E.K.O 启动时不拉起它，需要用户在面板里手动启动
+# 即便如此，一旦被手动启动，唯一入口也只会返回 Err，说明上游许可证未识别。
+enabled = true
+auto_start = false

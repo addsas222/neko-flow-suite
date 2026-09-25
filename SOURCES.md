@@ -16,7 +16,7 @@
 | `flow_simplify` | [tt-a1i/simplify-codebase](https://github.com/tt-a1i/simplify-codebase) | MIT | 已移植 | `fetched 2026-09-24 via src/simplify_README.md, src/simplify_SKILL.md, src/simplify_visual.md` | — | 用可度量的复用度指标替代「感觉重复」的代码简化工作流。 |
 | `flow_ponytail` | [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) | MIT | 已移植 | `fetched 2026-09-24 via src/ponytail_README.md` | — | 以「最短实现」为目标的剃刀式简化约束集。 |
 | `flow_viking` | [volcengine/OpenViking](https://github.com/volcengine/OpenViking) | Apache-2.0 | 已移植 | `fetched 2026-09-24 via src/ov_README.md` | — | 面向 Agent 的上下文数据库：文件系统式记忆与检索抽象。 |
-| `flow_evomap` | [EvoMap/evolver](https://github.com/EvoMap/evolver) | GPL-3.0 | 不移植 | `fetched 2026-09-26 via EvoMap/evolver README 与仓库元数据` | — | GEP 驱动的 agent 自演化引擎：用 Gene / Capsule / Event 三种可审计工件记录「候选变更 → 采纳 → 回放」的演化轨迹（evomap.ai）。 |
+| `flow_evomap` | [EvoMap/evolver](https://github.com/EvoMap/evolver) | GPL-3.0 | 已移植（需单独分发） | `fetched 2026-09-26 via EvoMap/evolver README 与仓库元数据` | — | GEP 驱动的 agent 自演化引擎：用 Gene / Capsule / Event 三种可审计工件记录「候选变更 → 采纳 → 回放」的演化轨迹（evomap.ai）。 |
 | `flow_eigenflux` | [phronesis-io/eigenflux](https://github.com/phronesis-io/eigenflux) | NOASSERTION（GitHub 未识别的非标准许可证） | 不移植 | `fetched 2026-09-26 via phronesis-io/eigenflux 仓库元数据` | — | EigenFlux —— 面向 AI agent 的开源通信与广播网络的官方实现（Go，eigenflux.ai）。 |
 
 ## 逐条详情
@@ -167,16 +167,17 @@ Google Stitch DESIGN.md 语料精选集：把真实品牌设计系统拆成 agen
 
 移植清单：
 
-  - spec.md
-  - 计划中 _shared/index.py、recall.py
+  - _shared/retrieval.py（记忆检索）、_shared/store.py（本地存储）、_shared/fsstore.py（文件系统式存储）
+  - routers/memory.py、query.py、fs.py（入口路由）
+  - ui/panel.tsx、i18n/{zh-CN,en}.json、docs/quickstart.md
 
-边界与差异：取其分层记忆思路，不依赖其服务端。
+边界与差异：取其分层记忆思路，不依赖其服务端；Apache-2.0 要求的修改声明已在 NOTICE 中落实。
 
 #### `flow_evomap` — evomap
 
 - 上游：[EvoMap/evolver](https://github.com/EvoMap/evolver)
 - 许可证：GPL-3.0
-- 移植状态：不移植 —— GPL-3.0 是强 copyleft：衍生作品必须以同一许可证整体分发，与本套件的 MIT 许可证不兼容。
+- 移植状态：已移植
 - 基线引用：`fetched 2026-09-26 via EvoMap/evolver README 与仓库元数据`（branch `main`）
 - 分组：workflow
 
@@ -184,9 +185,17 @@ GEP 驱动的 agent 自演化引擎：用 Gene / Capsule / Event 三种可审计
 
 移植清单：
 
-  - （无。只登记来源与设计说明，不含上游代码。）
+  - _shared/identity.py（节点身份恢复与凭证定位，只读 ~/.evomap）
+  - _shared/client.py（A2A 客户端，默认只读，远端内容按不可信数据处理）
+  - _shared/adapters.py（Mem0 / Zep / Letta / Cognee / MemOS 等多后端适配）
+  - _shared/memory.py（本地 MemoryStore 与 record/recall）
+  - _shared/redact.py（记录与回放前强制脱敏）
+  - _shared/errors.py（领域错误类型，消息不含密文或原始 payload）
+  - routers/{catalog,identity,memory}.py 与插件入口 __init__.py
 
-边界与差异：仓库与许可证已于 2026-09-26 确认。因 GPL-3.0 与套件 MIT 冲突，本插件不含任何上游移植代码，只登记来源与设计说明。若确需引入，须把 flow_evomap 单独以 GPL-3.0 发布，并从本套件的 MIT 分发中拆出。
+分发限制：GPL-3.0 是强 copyleft：该插件的移植代码必须以 GPL-3.0 单独分发，不得随本套件的 MIT 一体分发。
+
+边界与差异：仓库与许可证已于 2026-09-26 确认：GPL-3.0。本插件已移植但其移植代码沿用 GPL-3.0，必须单独以 GPL-3.0 发布，不能并入本套件的 MIT 一体分发。
 
 #### `flow_eigenflux` — eigenflux
 
@@ -202,7 +211,7 @@ EigenFlux —— 面向 AI agent 的开源通信与广播网络的官方实现�
 
   - （无。只登记来源与设计说明，不含上游代码。）
 
-边界与差异：在上游给出可识别的许可证文本之前不移植代码。同族的 eigenflux-claude-plugin / openclaw-eigenflux / codex-eigenflux 只是分发形态，许可证同样未识别。
+边界与差异：在上游给出可识别的许可证文本之前不移植代码。同族的 eigenflux-claude-plugin / openclaw-eigenflux / codex-eigenflux 只是分发形态，许可证同样未识别。本目录仍以合法清单 plugin.toml 注册（否则宿主无法加载），但插件被关成 passive = true（不参与 Agent 分派）与 auto_start = false（不随宿主启动）；即便手动启动，唯一入口也只返回 Err 说明不可用。目录内没有任何上游代码。
 
 ## 上游许可证要点
 
@@ -213,6 +222,8 @@ EigenFlux —— 面向 AI agent 的开源通信与广播网络的官方实现�
 - GPL-3.0（evomap / EvoMap/evolver）：强 copyleft，衍生作品必须以 GPL-3.0
   整体分发，与本套件的 MIT 冲突。**不移植**；若要引入须拆为独立 GPL-3.0 仓库，
   并从本套件的 MIT 分发中移除。
+  已移植，但该插件的移植代码沿用 GPL-3.0，必须单独以 GPL-3.0 发布，
+  不并入本套件的 MIT 一体分发。
 - NOASSERTION（eigenflux / phronesis-io/eigenflux）：GitHub 未识别为任何标准
   开源许可证，不能假定允许移植或再分发。**不移植**，待上游给出明确许可证文本后
   再评估。

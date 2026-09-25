@@ -16,12 +16,13 @@
 
 ## 移植了什么
 
-- spec.md
-- 计划中 _shared/index.py、recall.py
+- _shared/retrieval.py（记忆检索）、_shared/store.py（本地存储）、_shared/fsstore.py（文件系统式存储）
+- routers/memory.py、query.py、fs.py（入口路由）
+- ui/panel.tsx、i18n/{zh-CN,en}.json、docs/quickstart.md
 
 ## 边界与差异
 
-取其分层记忆思路，不依赖其服务端。
+取其分层记忆思路，不依赖其服务端；Apache-2.0 要求的修改声明已在 NOTICE 中落实。
 
 ## 合规
 

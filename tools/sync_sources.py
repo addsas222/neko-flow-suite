@@ -68,7 +68,7 @@ def render_source_md(entry: dict, suite: dict) -> str:
         "",
     ]
     if blocked:
-        lines.append("（无。本插件不含任何上游移植代码，只登记来源与设计说明。）")
+        lines.append("（无。本插件不含任何上游移植代码。）")
     else:
         lines += [f"- {item}" for item in entry.get("ported", [])]
     lines += [
@@ -92,7 +92,7 @@ def render_source_md(entry: dict, suite: dict) -> str:
     if blocked:
         lines += [
             f"上游以 {lic} 发布，该许可证不允许在本套件的 MIT 分发内移植再分发。",
-            "本插件因此只登记来源与设计说明，不含任何上游代码。",
+            "本插件因此只登记来源，并以禁用态注册为一个合法插件，不含任何上游代码。",
         ]
     elif isolated:
         lines += [
@@ -184,6 +184,10 @@ def main(argv: list[str]) -> int:
             if check_only:
                 if not target.is_file():
                     problems.append(f"{plugin_dir.name}: 缺 {name}")
+                elif target.read_text(encoding="utf-8") != text:
+                    # 只校验存在会让生成物静默漂移：sources.json 改了，而
+                    # SOURCE.md 还留着上一轮的内容（flow_viking 就这么旧过）。
+                    problems.append(f"{plugin_dir.name}: {name} 与 sources.json 不一致，请重跑本脚本")
             else:
                 target.write_text(text, encoding="utf-8")
                 print(f"wrote {target.relative_to(ROOT)}")

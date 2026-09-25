@@ -29,10 +29,13 @@ def check(name: str) -> list[str]:
             added.append(path)
 
     try:
-        try:
-            importlib.import_module("_shared")
-        except Exception:
-            problems.append(f"{name}._shared 导入失败：\n{traceback.format_exc(limit=4)}")
+        # 仅当插件真有 _shared 层时才检查；不移植的登记型插件（如 flow_eigenflux）
+        # 只有 __init__.py，没有实现层，import _shared 必然失败。
+        if (directory / "_shared").is_dir():
+            try:
+                importlib.import_module("_shared")
+            except Exception:
+                problems.append(f"{name}._shared 导入失败：\n{traceback.format_exc(limit=4)}")
 
         try:
             module = importlib.import_module(name)
