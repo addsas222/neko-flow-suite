@@ -1,0 +1,1 @@
+chore: drop the leftover commit message file
