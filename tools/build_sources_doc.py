@@ -49,6 +49,8 @@ def main(argv: list[str]) -> int:
                 status = "不移植"
             elif st == "isolated":
                 status = "已移植（需单独分发）"
+            elif st == "reimplemented":
+                status = "已适配（只重写接口）"
             else:
                 status = "已移植"
             lines.append(
@@ -104,6 +106,10 @@ def main(argv: list[str]) -> int:
         "  并从本套件的 MIT 分发中移除。",
         "  已移植，但该插件的移植代码沿用 GPL-3.0，必须单独以 GPL-3.0 发布，",
         "  不并入本套件的 MIT 一体分发。",
+        "- LGPL-3.0（MaiBot Plugin SDK / flow_maibot）：flow_maibot 只按公开接口",
+        "  重写等价实现，**未随附任何上游源码**，因此不构成衍生作品，LGPL 的 copyleft",
+        "  义务不随本套件的 MIT 分发转移；套件自身的适配与编排代码以 MIT 发布。",
+        "  运行期由用户自行加载的上游 MaiBot 插件，其许可证义务由加载方承担。",
         "- NOASSERTION（eigenflux / phronesis-io/eigenflux）：GitHub 未识别为任何标准",
         "  开源许可证，不能假定允许移植或再分发。**不移植**，待上游给出明确许可证文本后",
         "  再评估。",

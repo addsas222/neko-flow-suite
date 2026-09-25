@@ -1,0 +1,63 @@
+[plugin]
+  id = "flow_maibot"
+  name = "MaiBot 工具桥"
+  description = "把 MaiBot 生态的插件（首个适配 AnySearch）加载进宿主持久进程，并把它们的 @Tool 注册成 N.E.K.O 的原生 LLM 工具。MaiBot 插件在桥内改造过的 ctx 上运行，返回 OpenAiFunctionToolCompat / dict / 模型正文等多种形态的工具清单，统一整理成 NAME + JSON Schema 的子集后交给宿主注册。"
+  short_description = "Bridge MaiBot plugin tools into NEKO as native LLM tools."
+  keywords = ["MaiBot", "工具", "AnySearch", "搜索", "tool bridge", "搜索", "MCP 兼容", "schema", "plugin", "适配"]
+  version = "0.1.0"
+  type = "plugin"
+  entry = "plugin.plugins.flow_maibot:FlowMaibotPlugin"
+
+[plugin.author]
+  name = "NEKO Flow Pack"
+
+[plugin.sdk]
+  recommended = ">=0.1.0,<0.2.0"
+  supported = ">=0.1.0,<0.3.0"
+
+[plugin.i18n]
+  default_locale = "zh-CN"
+  locales_dir = "i18n"
+
+[plugin.ui]
+  enabled = true
+
+[[plugin.ui.panel]]
+  id = "maibot"
+  title = "MaiBot 工具桥"
+  entry = "ui/panel.tsx"
+  context = "maibot"
+  permissions = ["state:read", "action:call", "config:read"]
+
+[[plugin.ui.guide]]
+  id = "guide"
+  title = "使用指南"
+  entry = "docs/guide.md"
+  permissions = ["state:read"]
+
+[plugin_runtime]
+  enabled = true
+  auto_start = true
+
+[maibot]
+# 这些键会原样进 BridgeSettings.from_config（见 _shared/settings.py）：
+# 未在 plugin.toml 里写的键走该文件里的默认值，空配置也能启动（降级态）。
+# 也可以改写宿主数据目录下的 data/config.json，两者语义等价。
+#
+# [maibot] 段同时认平铺写法：enabled / strict_sdk / plugins 直接写在段下、
+# anysearch.* 用点号键写都行；plugins 写 "AnySearch" 这类 ID / 类名会自动补全
+# 成内置插件路径。密钥不要写在这里：把 ANYSEARCH_API_KEY 写进环境变量即可。
+  [maibot.sdk]
+    enabled_bridge = true
+    strict_sdk = false
+    plugins = ["_shared/maibot_plugins/anysearch_plugin.py"]
+
+  [maibot.anysearch]
+    endpoint = "https://api.anysearch.com/mcp"
+    api_key = ""
+    api_key_env = "ANYSEARCH_API_KEY"
+    tools = ["search", "batch_search"]
+    description_mode = "brief"
+    timeout_seconds = 60.0
+    max_chars = 24000
+    max_results = 10

@@ -1,0 +1,12 @@
+<!-- 本文件由 tools/sync_sources.py 从 sources.json 生成，请勿手改。 -->
+
+NOTICE · flow_maibot
+
+本插件适配 AnySearch（MaiBot 插件）（(待确认)）的公开插件接口，但不包含其任何上游代码；相关实现为本套件自行编写。
+上游许可证：LGPL-3.0（MaiBot Plugin SDK，未随附源码）
+基线引用：上游仓库与提交基线待确认：本插件只适配 MaiBot 生态的 AnySearch 插件（把多个搜索后端聚合成一个 MCP 网关），未随附任何上游源码
+
+flow_maibot 的编排与胶水代码：
+Copyright (c) 2026 neko-flow-suite contributors，MIT。
+
+上游项目的版权与商标归其作者所有。

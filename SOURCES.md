@@ -12,6 +12,7 @@
 | `flow_impeccable` | [pbakaus/impeccable](https://github.com/pbakaus/impeccable) | Apache-2.0 | 已移植 | `e0881d2de397d5e9761d7b35ff5017d8f5ebf69b` | 70,683 | 设计语言型 skill：一套命令表把设计/重设计/审计/动效/排版/适配/性能路由到对应 playbook，并强制有界验证轮次。 |
 | `flow_huashu` | [alchaincyf/huashu-design](https://github.com/alchaincyf/huashu-design) | MIT | 已移植 | `0830494ecb1c117e25b313a8114fe55a6bf2b125` | 24,431 | HTML 原生设计 skill：高保真原型/幻灯片/动画，铁律是三方向硬门 + 事实验证先于假设 + 工作室式角色轮换。 |
 | `flow_designmd` | [VoltAgent/awesome-design-md](https://github.com/VoltAgent/awesome-design-md) | MIT | 已移植 | `f6961238d5cddcf8042a74a70fc400ec67181abb` | 117,682 | Google Stitch DESIGN.md 语料精选集：把真实品牌设计系统拆成 agent 可读的 markdown token 文件（73 份）。 |
+| `flow_maibot` | [（待确认）](（待确认）) | LGPL-3.0（MaiBot Plugin SDK，未随附源码） | 已适配（只重写接口） | `上游仓库与提交基线待确认：本插件只适配 MaiBot 生态的 AnySearch 插件（把多个搜索后端聚合成一个 MCP 网关），未随附任何上游源码` | — | MaiBot 生态强在工具端（大量第三方数据源以插件形式沉淀），N.E.K.O. 强在模型端与前端。flow_maibot 做「工具端 → 模型端」的搬运：在宿主持久进程里动态导入 MaiBot 插件，把它们的 @Tool 注册成 N.E.K.O. 的原生 LLM 工具。 |
 | `flow_atlas` | [tt-a1i/archify](https://github.com/tt-a1i/archify) | MIT | 已移植 | `fetched 2026-09-24 via src/archify_SKILL.md, src/archify_README.md, src/archify_PRODUCT.md` | — | 规格驱动的交互式图表库：作者写 JSON 规格，排版引擎算几何，渲染器出图。 |
 | `flow_simplify` | [tt-a1i/simplify-codebase](https://github.com/tt-a1i/simplify-codebase) | MIT | 已移植 | `fetched 2026-09-24 via src/simplify_README.md, src/simplify_SKILL.md, src/simplify_visual.md` | — | 用可度量的复用度指标替代「感觉重复」的代码简化工作流。 |
 | `flow_ponytail` | [DietrichGebert/ponytail](https://github.com/DietrichGebert/ponytail) | MIT | 已移植 | `fetched 2026-09-24 via src/ponytail_README.md` | — | 以「最短实现」为目标的剃刀式简化约束集。 |
@@ -98,6 +99,29 @@ Google Stitch DESIGN.md 语料精选集：把真实品牌设计系统拆成 agen
 边界与差异：语料版权归各品牌/原分析作者；套件只做索引与导出工具，不重分发 DESIGN.md 正文。
 
 ### 工作流类
+
+#### `flow_maibot` — AnySearch（MaiBot 插件）
+
+- 上游：[（待确认）](（待确认）)
+- 许可证：LGPL-3.0（MaiBot Plugin SDK，未随附源码）
+- 移植状态：已移植
+- 基线引用：`上游仓库与提交基线待确认：本插件只适配 MaiBot 生态的 AnySearch 插件（把多个搜索后端聚合成一个 MCP 网关），未随附任何上游源码`
+- 分组：workflow
+
+MaiBot 生态强在工具端（大量第三方数据源以插件形式沉淀），N.E.K.O. 强在模型端与前端。flow_maibot 做「工具端 → 模型端」的搬运：在宿主持久进程里动态导入 MaiBot 插件，把它们的 @Tool 注册成 N.E.K.O. 的原生 LLM 工具。
+
+移植清单：
+
+  - _shared/sdk_compat.py（MaiBot Plugin SDK 公开接口的等价实现：Tool/Action/Command/API/EventHandler/HookHandler/MessageGateway/LLMProvider/HomeCard 与 MaiBotPlugin 基类；不含上游代码）
+  - _shared/context.py（MaiBot PluginContext 兼容代理：ctx.<capability>.<method>() -> 网关回调，白名单外一律拒绝）
+  - _shared/mcp_client.py（纯标准库 MCP streamable-http 客户端，transport 可注入）
+  - _shared/anysearch.py（参数清洗、结果裁剪、错误归一；密钥绝不进错误文本）
+  - _shared/schemas.py（上游 tools/list 捕获副本，按 brief/full 产出描述与参数 schema）
+  - _shared/bridge.py（动态导入、组件收集、@Tool -> NEKO 工具映射、调用分发与错误收敛）
+  - _shared/settings.py（配置解析与校验、内置插件别名补全）
+  - _runtime.py（宿主 LLM 工具注册协商、进程内编排、生命周期与 Hosted UI 状态）
+
+边界与差异：重写的是公开接口而非上游实现，因此不构成上游源码的衍生作品；LGPL 的 copyleft 义务不随本套件的 MIT 分发转移。桥只按用户配置从用户本地或远端加载上游 MaiBot 插件，上游源码的许可证义务由加载方自行承担。API key 只从宿主配置或 ANYSEARCH_API_KEY 读取，绝不写盘、绝不进日志与问题摘要。适配刻意限制在 AnySearch 一个插件上，其他 MaiBot 插件先登记为非目标，避免每插件造一个加载器。
 
 #### `flow_atlas` — archify
 
@@ -224,6 +248,10 @@ EigenFlux —— 面向 AI agent 的开源通信与广播网络的官方实现�
   并从本套件的 MIT 分发中移除。
   已移植，但该插件的移植代码沿用 GPL-3.0，必须单独以 GPL-3.0 发布，
   不并入本套件的 MIT 一体分发。
+- LGPL-3.0（MaiBot Plugin SDK / flow_maibot）：flow_maibot 只按公开接口
+  重写等价实现，**未随附任何上游源码**，因此不构成衍生作品，LGPL 的 copyleft
+  义务不随本套件的 MIT 分发转移；套件自身的适配与编排代码以 MIT 发布。
+  运行期由用户自行加载的上游 MaiBot 插件，其许可证义务由加载方承担。
 - NOASSERTION（eigenflux / phronesis-io/eigenflux）：GitHub 未识别为任何标准
   开源许可证，不能假定允许移植或再分发。**不移植**，待上游给出明确许可证文本后
   再评估。

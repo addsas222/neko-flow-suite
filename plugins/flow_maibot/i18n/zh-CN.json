@@ -1,0 +1,12 @@
+{
+  "maibot.title": "MaiBot 工具桥",
+  "maibot.subtitle": "把 MaiBot 插件工具注册成 NEKO 原生 LLM 工具。",
+  "maibot.action.attach": "载入 / 卸载",
+  "maibot.action.refresh": "刷新状态",
+  "maibot.tools": "已注册工具",
+  "maibot.problems": "问题清单",
+  "maibot.messages.empty": "还没有注册工具。载入 MaiBot 插件后，工具会出现在这里。",
+  "maibot.messages.ready": "没有待处理问题。",
+  "maibot.messages.no_entry": "宿主没有暴露 LLM 工具注册入口，工具暂时只留在桥内。",
+  "maibot.messages.config_error": "桥的配置被拒绝，请按指南里的键名修正。"
+}

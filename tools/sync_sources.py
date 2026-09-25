@@ -37,6 +37,7 @@ def render_source_md(entry: dict, suite: dict) -> str:
     lic = entry.get("license", "待确认")
     blocked = entry.get("porting_status") == "blocked"
     isolated = entry.get("porting_status") == "isolated"
+    reimplemented = entry.get("porting_status") == "reimplemented"
     lines = [
         HEADER,
         "",
@@ -53,6 +54,8 @@ def render_source_md(entry: dict, suite: dict) -> str:
         status_line = "不移植（原因见下文）"
     elif isolated:
         status_line = "已移植，但须单独以 " + lic + " 分发（见下文）"
+    elif reimplemented:
+        status_line = "已适配：只重写公开接口，不含任何上游代码"
     else:
         status_line = "已移植"
     lines.append(f"**移植状态**：{status_line}  ")
@@ -64,11 +67,14 @@ def render_source_md(entry: dict, suite: dict) -> str:
         "",
         entry.get("summary", ""),
         "",
-        "## 移植了什么",
+        "## 重写/移植了什么" if reimplemented else "## 移植了什么",
         "",
     ]
     if blocked:
         lines.append("（无。本插件不含任何上游移植代码。）")
+    elif reimplemented:
+        lines.append("（以下是本套件自己写的等价实现，不含任何上游源码。）")
+        lines += [f"- {item}" for item in entry.get("ported", [])]
     else:
         lines += [f"- {item}" for item in entry.get("ported", [])]
     lines += [
@@ -99,6 +105,12 @@ def render_source_md(entry: dict, suite: dict) -> str:
             f"上游以 {lic} 发布。本插件的移植代码沿用 {lic}，",
             f"必须以 {lic} 单独分发，不并入本套件的 MIT 分发。",
         ]
+    elif reimplemented:
+        lines += [
+            f"上游以 {lic} 发布。本插件没有移植任何上游源码，只按公开接口重写等价实现，",
+            "因此不构成上游源码的衍生作品，上游许可证的 copyleft 义务不随本套件的 MIT 分发转移。",
+            "本插件的适配与编排代码以 MIT 发布。",
+        ]
     else:
         lines += [
             f"上游以 {lic} 发布。本插件的移植代码沿用该许可证；",
@@ -117,6 +129,7 @@ def render_notice(entry: dict, suite: dict) -> str:
     url = entry.get("upstream_url") or "(待确认)"
     blocked = entry.get("porting_status") == "blocked"
     isolated = entry.get("porting_status") == "isolated"
+    reimplemented = entry.get("porting_status") == "reimplemented"
     lic_n = entry.get("license", "待确认")
     lines = [
         HEADER,
@@ -128,6 +141,11 @@ def render_notice(entry: dict, suite: dict) -> str:
         lines += [
             f"本插件参考 {entry['key']}（{url}）的设计，"
             "但不包含其任何代码，因此不构成衍生作品。",
+        ]
+    elif reimplemented:
+        lines += [
+            f"本插件适配 {entry['key']}（{url}）的公开插件接口，"
+            "但不包含其任何上游代码；相关实现为本套件自行编写。",
         ]
     else:
         lines.append(f"本插件移植自 {entry['key']}（{url}）。")

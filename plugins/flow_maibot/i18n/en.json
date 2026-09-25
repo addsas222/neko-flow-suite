@@ -1,0 +1,12 @@
+{
+  "maibot.title": "MaiBot Tool Bridge",
+  "maibot.subtitle": "Registers MaiBot plugin tools as native NEKO LLM tools.",
+  "maibot.action.attach": "Load / unload",
+  "maibot.action.refresh": "Refresh status",
+  "maibot.tools": "Registered tools",
+  "maibot.problems": "Problems",
+  "maibot.messages.empty": "No tools registered yet. Load a MaiBot plugin and they show up here.",
+  "maibot.messages.ready": "No outstanding problems.",
+  "maibot.messages.no_entry": "The host exposes no LLM tool registration entry; tools stay inside the bridge for now.",
+  "maibot.messages.config_error": "The bridge config was rejected; fix the keys listed in the guide."
+}
