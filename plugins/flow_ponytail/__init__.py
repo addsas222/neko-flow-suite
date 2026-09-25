@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from plugin.sdk.plugin import Ok, NekoPluginBase, lifecycle, neko_plugin, plugin_entry, tr, ui
+from plugin.sdk.plugin import NekoPluginBase, Ok, lifecycle, neko_plugin, plugin_entry, tr, ui
 
 from ._shared.intensity import LEVELS, describe, normalize_level
 from .routers.export import ExportRouter
@@ -17,15 +17,18 @@ from .routers.review import ReviewRouter
 
 PANEL_CONTEXT = "ponytail"
 
-
 @neko_plugin
 class FlowPonytailPlugin(NekoPluginBase):
     """极简教练插件。"""
 
+    # 声明 router 类，供主进程静态扫描 entry 元数据
+    __routers__ = [ReviewRouter, ExportRouter]
+
     def __init__(self, ctx: Any) -> None:
         super().__init__(ctx)
-        self.include_router(ReviewRouter())
-        self.include_router(ExportRouter())
+        # 注册 routers — 必须在 __init__ 中，collect_entries 在 startup 之前调用
+        for router_cls in self.__routers__:
+            self.include_router(router_cls())
         self._level = normalize_level("full")
 
     @ui.context(id=PANEL_CONTEXT)
@@ -40,6 +43,7 @@ class FlowPonytailPlugin(NekoPluginBase):
             "last_error": "",
         }
 
+    @ui.action(id="set_level", label="设置强度")
     @plugin_entry(
         id="set_level",
         name="设置强度",

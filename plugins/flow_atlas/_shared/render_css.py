@@ -67,6 +67,5 @@ body { margin: 0; background: var(--bg); color: var(--text);
 }
 """
 
-
 def render_css() -> str:
     return CSS.strip()

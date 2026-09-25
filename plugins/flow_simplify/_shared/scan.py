@@ -8,7 +8,6 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field
-from pathlib import Path
 from typing import Any
 
 SKIP_DIRS = {
@@ -19,7 +18,6 @@ SOURCE_SUFFIXES = {".py"}
 
 _DEF_RE = re.compile(r"^\s*(?:async\s+)?def\s+([A-Za-z_][A-Za-z0-9_]*)", re.M)
 _CLASS_RE = re.compile(r"^\s*class\s+([A-Za-z_][A-Za-z0-9_]*)", re.M)
-
 
 @dataclass(slots=True)
 class Candidate:
@@ -41,7 +39,6 @@ class Candidate:
             "detail": self.detail,
             "references": self.references,
         }
-
 
 @dataclass(slots=True)
 class ScanReport:

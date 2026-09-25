@@ -45,7 +45,6 @@ USE_CASE_PRESETS: dict[str, tuple[int, int, int]] = {
 
 BASELINE: tuple[int, int, int] = (8, 6, 4)
 
-
 @dataclass(frozen=True, slots=True)
 class Dials:
     """三个旋钮的取值。1..10 闭区间。"""
@@ -67,14 +66,11 @@ class Dials:
     def __str__(self) -> str:
         return f"{self.variance} / {self.motion} / {self.density}"
 
-
 def clamp(value: int) -> int:
     return max(1, min(10, int(value)))
 
-
 def normalize(dials: Dials) -> Dials:
     return Dials(clamp(dials.variance), clamp(dials.motion), clamp(dials.density))
-
 
 def defaults_for(vibe: str, use_case: str = "") -> Dials:
     """先按用例 preset 取值，再用 vibe 区间夹紧。
@@ -92,11 +88,9 @@ def defaults_for(vibe: str, use_case: str = "") -> Dials:
         picked.append(min(max(value, low), high))
     return normalize(Dials(*picked))
 
-
 def midpoint(rng: tuple[int, int]) -> int:
     low, high = rng
     return (low + high) // 2
-
 
 def motion_gates(dials: Dials) -> dict[str, bool]:
     """上游第 5 节把若干能力挂在 MOTION_INTENSITY 上。"""
@@ -106,11 +100,9 @@ def motion_gates(dials: Dials) -> dict[str, bool]:
         "page_must_actually_move": dials.motion > 4,
     }
 
-
 def motion_motivated(dials: Dials) -> bool:
     """MOTION_INTENSITY > 4 时页面必须真的动；反之不许硬塞。"""
     return dials.motion > 4
-
 
 def adjust_for_redesign(dials: Dials, mode: str) -> Dials:
     """上游第 1.A/1.B 节：preserve 只 +1 motion，overhaul 的 variance/motion 各 +2。"""

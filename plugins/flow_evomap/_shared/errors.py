@@ -8,24 +8,20 @@ class EvoError(Exception):
 
     code = "EVO_ERROR"
 
-
 class IdentityError(EvoError):
     """身份缺失、格式错误或恢复失败。"""
 
     code = "IDENTITY_ERROR"
-
 
 class ProtocolError(EvoError):
     """远端返回了不合规的结构。"""
 
     code = "PROTOCOL_ERROR"
 
-
 class NetworkError(EvoError):
     """网络或传输层失败。"""
 
     code = "NETWORK_ERROR"
-
 
 class RedactionError(EvoError):
     """内容在脱敏后仍然不安全。"""

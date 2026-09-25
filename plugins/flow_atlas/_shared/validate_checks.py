@@ -9,12 +9,11 @@ from .layout_checks import (
     check_no_node_overlap,
     check_nodes_nonempty,
 )
-from .receipt import SEVERITY_ERROR, Issue, Receipt, record
 from .nodes import MAX_CURATED_VIEWS, MAX_PRIMARY_NODES
+from .receipt import SEVERITY_ERROR, Issue, Receipt, record
 from .spec import Diagram
 
 DIAGRAM_TYPES_OK = ("architecture", "workflow", "sequence", "dataflow", "lifecycle")
-
 
 def check_type(diagram: Diagram, receipt: Receipt) -> None:
     record(
@@ -29,7 +28,6 @@ def check_type(diagram: Diagram, receipt: Receipt) -> None:
             ("choose a supported diagram type",),
         ),
     )
-
 
 def check_references(diagram: Diagram, receipt: Receipt) -> None:
     known = set(diagram.node_map()) | diagram.participant_ids()
@@ -51,7 +49,6 @@ def check_references(diagram: Diagram, receipt: Receipt) -> None:
         ),
     )
 
-
 def check_primary_budget(diagram: Diagram, receipt: Receipt) -> None:
     over = diagram.primary_count() - MAX_PRIMARY_NODES
     record(
@@ -67,7 +64,6 @@ def check_primary_budget(diagram: Diagram, receipt: Receipt) -> None:
         ),
     )
 
-
 def check_views_budget(diagram: Diagram, receipt: Receipt) -> None:
     over = len(diagram.views) - MAX_CURATED_VIEWS
     record(
@@ -82,7 +78,6 @@ def check_views_budget(diagram: Diagram, receipt: Receipt) -> None:
             ("drop the least useful chapter",),
         ),
     )
-
 
 __all__ = [
     "DIAGRAM_TYPES_OK",

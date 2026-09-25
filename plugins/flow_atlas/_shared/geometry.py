@@ -11,7 +11,6 @@ class Point:
     x: float
     y: float
 
-
 @dataclass(slots=True)
 class Box:
     """轴对齐包围盒。"""
@@ -46,7 +45,6 @@ class Box:
     def to_dict(self) -> dict[str, float]:
         return {"x": self.x, "y": self.y, "w": self.w, "h": self.h}
 
-
 @dataclass(slots=True)
 class PlacedNode:
     id: str
@@ -75,7 +73,6 @@ class PlacedNode:
     def bottom(self) -> Point:
         return Point(self.box.cx, self.box.y + self.box.h)
 
-
 @dataclass(slots=True)
 class RoutedEdge:
     id: str
@@ -101,7 +98,6 @@ class RoutedEdge:
             "detail": self.detail,
         }
 
-
 @dataclass(slots=True)
 class PlacedGroup:
     id: str
@@ -110,7 +106,6 @@ class PlacedGroup:
 
     def to_dict(self) -> dict[str, Any]:
         return {"id": self.id, "label": self.label, "box": self.box.to_dict()}
-
 
 @dataclass(slots=True)
 class Layout:

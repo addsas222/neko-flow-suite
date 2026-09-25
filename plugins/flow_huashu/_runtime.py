@@ -6,8 +6,6 @@
 
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 from typing import Annotated
 
 try:
@@ -21,9 +19,12 @@ try:
     )
 except ImportError:
     NekoPluginBase = object  # type: ignore[assignment,misc]
-    Ok = lambda data: {"ok": True, "data": data}  # type: ignore[assignment]
-    Err = lambda error: {"ok": False, "error": str(error)}  # type: ignore[assignment]
-    neko_plugin = lambda cls: cls  # type: ignore[assignment]
+    def Ok(data):  # type: ignore[assignment]
+        return {"ok": True, "data": data}
+    def Err(error):  # type: ignore[assignment]
+        return {"ok": False, "error": str(error)}
+    def neko_plugin(cls):  # type: ignore[assignment]
+        return cls
 
     class _UiFallback:
         """ui.context / ui.action 的本地兜底，签名与插件 SDK 一致。"""
@@ -53,15 +54,10 @@ except ImportError:
 
         return wrap
 
-
-_HERE = Path(__file__).resolve().parent
-if str(_HERE) not in sys.path:
-    sys.path.insert(0, str(_HERE))
-
-from _shared.facts import scan, verification_checklist  # noqa: E402
-from _shared.gate import Direction, Gate, GateViolation  # noqa: E402
-from _shared.roles import check_coverage, rotation_for  # noqa: E402
-from _shared.routing import route as route_task  # noqa: E402
+from ._shared.facts import scan, verification_checklist  # noqa: E402
+from ._shared.gate import Direction, Gate, GateViolation  # noqa: E402
+from ._shared.roles import check_coverage, rotation_for  # noqa: E402
+from ._shared.routing import route as route_task  # noqa: E402
 
 
 @neko_plugin
@@ -161,7 +157,6 @@ class FlowHuashuPlugin(NekoPluginBase):
                 ),
             }
         )
-
 
     # -- Hosted UI ------------------------------------------------------
 

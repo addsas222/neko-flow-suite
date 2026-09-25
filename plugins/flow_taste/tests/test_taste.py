@@ -63,7 +63,6 @@ class TestBrief(unittest.TestCase):
         )
         self.assertIn("govuk-frontend", read.family)
 
-
 class TestDials(unittest.TestCase):
     def test_baseline_is_8_6_4(self) -> None:
         self.assertEqual(str(Dials()), "8 / 6 / 4")
@@ -94,7 +93,6 @@ class TestDials(unittest.TestCase):
         self.assertEqual(adjust_for_redesign(base, "preserve").variance, 5)
         self.assertEqual(adjust_for_redesign(base, "overhaul").variance, 7)
         self.assertEqual(adjust_for_redesign(base, "overhaul").motion, 6)
-
 
 class TestLint(unittest.TestCase):
     def test_h_screen_blocks(self) -> None:
@@ -127,7 +125,6 @@ class TestLint(unittest.TestCase):
         self.assertEqual(len(ids), len(set(ids)))
         self.assertGreater(len(ids), 10)
 
-
 class TestGates(unittest.TestCase):
     def test_everything_declared_passes(self) -> None:
         declared = {gate.id: True for gate in GATES}
@@ -159,7 +156,6 @@ class TestGates(unittest.TestCase):
         )
         self.assertIn("motion-claims-match", [r.gate_id for r in report.failed])
 
-
 class TestSystems(unittest.TestCase):
     def test_public_sector_picks_official(self) -> None:
         decision = choose("US public-sector / trust-first")
@@ -173,7 +169,6 @@ class TestSystems(unittest.TestCase):
 
     def test_unknown_signal_falls_back_honestly(self) -> None:
         self.assertIn("借用", choose("something nobody catalogued").directive)
-
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

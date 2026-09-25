@@ -33,7 +33,6 @@ class CutResult:
             "warnings": list(self.warnings),
         }
 
-
 def execute_cut(root: str, proof: ProofRecord, *, dry_run: bool = False) -> CutResult:
     """执行一次删除。
 
@@ -84,7 +83,6 @@ def execute_cut(root: str, proof: ProofRecord, *, dry_run: bool = False) -> CutR
     )
     return result
 
-
 def _locate(base: Path, location: str) -> Path | None:
     """从 location 字符串里取出 `path` 或 `path:line`。"""
     text = (location or "").strip()
@@ -100,7 +98,6 @@ def _locate(base: Path, location: str) -> Path | None:
     if target.exists() and _inside(target, base.resolve()):
         return target
     return None
-
 
 def _inside(target: Path, base: Path) -> bool:
     try:

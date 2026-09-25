@@ -13,7 +13,6 @@ from .redact import redact
 MAX_ENTRIES = 2000
 STORE_NAME = "memory.json"
 
-
 @dataclass(slots=True)
 class MemoryEntry:
     """一条已脱敏的记忆。"""
@@ -34,7 +33,6 @@ class MemoryEntry:
             "created_at": self.created_at,
             "hits": self.hits,
         }
-
 
 @dataclass(slots=True)
 class MemoryStore:
@@ -140,10 +138,8 @@ class MemoryStore:
             "tags": sorted({tag for entry in self.entries.values() for tag in entry.tags}),
         }
 
-
 def record(store: MemoryStore, entry_id: str, text: str, **kwargs: Any) -> MemoryEntry:
     return store.record(entry_id, text, **kwargs)
-
 
 def recall(store: MemoryStore, query: str, **kwargs: Any) -> list[dict[str, Any]]:
     return store.recall(query, **kwargs)

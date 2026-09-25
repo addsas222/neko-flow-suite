@@ -63,7 +63,6 @@ ENTRIES: tuple[tuple[str, tuple[str, ...], tuple[str, ...]], ...] = (
     ),
 )
 
-
 @dataclass(frozen=True, slots=True)
 class Route:
     hits: tuple[str, ...]
@@ -78,7 +77,6 @@ class Route:
             "required_reading": list(self.required_reading),
             "gate_required": self.gate_required,
         }
-
 
 def route(task: str) -> Route:
     """按信号命中并叠加入口链。命中第 2 行（新视觉设计）必然要求三方向硬门。"""
@@ -105,7 +103,6 @@ def route(task: str) -> Route:
         return Route((), ("标准流程",), (), False)
     return Route(tuple(hits), tuple(chain), tuple(reading), gate)
 
-
 def _hits(signal: str, text: str, raw: str) -> bool:
     if "任何会产出新视觉设计的任务" in signal:
         # 上游铁律：只要在产出新视觉，就必走。这里用启发式近似人工判断。
@@ -113,7 +110,6 @@ def _hits(signal: str, text: str, raw: str) -> bool:
     if "提到具体品牌/产品名" in signal:
         return any(keyword in text for keyword in _keywords_for(signal)) or _names_brand(raw)
     return any(keyword in text for keyword in _keywords_for(signal))
-
 
 #: 产出新视觉的信号（用于近似上游的人工判断）。
 _VISUAL_WORK_HINTS: tuple[str, ...] = (
@@ -149,7 +145,6 @@ _NON_BRAND_TOKENS: frozenset[str] = frozenset(
     }
 )
 
-
 def _names_brand(raw: str) -> bool:
     """大写开头的专有 token → 当成点了某个产品/品牌的名。"""
     import re
@@ -158,7 +153,6 @@ def _names_brand(raw: str) -> bool:
         if token not in _NON_BRAND_TOKENS:
             return True
     return False
-
 
 def _keywords_for(signal: str) -> tuple[str, ...]:
     mapping = {

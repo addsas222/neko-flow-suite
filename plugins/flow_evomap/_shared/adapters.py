@@ -59,7 +59,6 @@ BACKENDS: dict[str, dict[str, str]] = {
     },
 }
 
-
 @dataclass(frozen=True, slots=True)
 class AdapterSpec:
     """一个后端的接入说明。"""
@@ -79,10 +78,8 @@ class AdapterSpec:
             "requires_secret": self.requires_secret,
         }
 
-
 def known_backends() -> list[str]:
     return sorted(BACKENDS)
-
 
 def adapter(name: str) -> AdapterSpec | None:
     spec = BACKENDS.get((name or "").strip().lower())
@@ -95,7 +92,6 @@ def adapter(name: str) -> AdapterSpec | None:
         notes=spec["notes"],
         requires_secret=spec["requires_secret"].lower() == "true",
     )
-
 
 def describe_all() -> list[dict[str, Any]]:
     return [spec.to_dict() for spec in (adapter(name) for name in known_backends()) if spec]

@@ -17,7 +17,6 @@ LAYERS = (L0, L1, L2)
 L0_MAX_CHARS = 120
 L1_MAX_CHARS = 600
 
-
 @dataclass(slots=True)
 class LayerRecord:
     """一个主体在某一层上的表示。"""
@@ -50,7 +49,6 @@ class LayerRecord:
             payload["content"] = self.content
         return payload
 
-
 def demote(content: str, *, target_layer: str = L0) -> str:
     """把完整内容压成某一层的摘要。"""
     text = (content or "").strip()
@@ -62,7 +60,6 @@ def demote(content: str, *, target_layer: str = L0) -> str:
     if target_layer == L1:
         return text[:L1_MAX_CHARS]
     return text
-
 
 def promote(record: LayerRecord, *, target_layer: str = L2) -> LayerRecord:
     """把某一层提升到更完整的一层。"""
@@ -84,7 +81,6 @@ def promote(record: LayerRecord, *, target_layer: str = L2) -> LayerRecord:
         updated_at=record.updated_at,
     )
 
-
 @dataclass(slots=True)
 class MemoryEntry:
     """一次提交进记忆系统的条目。"""
@@ -103,7 +99,6 @@ class MemoryEntry:
             "pinned": self.pinned,
             "chars": len(self.content or ""),
         }
-
 
 @dataclass(slots=True)
 class CommitResult:

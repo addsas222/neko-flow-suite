@@ -10,7 +10,6 @@ from plugin.sdk.plugin import Err, Ok, PluginRouter, plugin_entry, ui
 from .._shared.errors import AuthorityError, ScopeError
 from .._shared.proof import ProofRecord
 
-
 REQUIRED_FIELDS = (
     "location",
     "burden",
@@ -20,7 +19,6 @@ REQUIRED_FIELDS = (
     "verification",
     "net_complexity",
 )
-
 
 class ChangeRouter(PluginRouter):
     """授权修改。一次只处理一个所有权边界，完成并验证后才进入下一个。"""
@@ -130,7 +128,7 @@ class ChangeRouter(PluginRouter):
         result = execute_cut(root, proof)
         return Ok(result.to_dict())
 
-    @ui.action(id="verdicts", label="Verdicts")
+    @ui.action(id="verdict_guide", label="判断口径")
     @plugin_entry(
         id="verdict_guide",
         name="判断口径",

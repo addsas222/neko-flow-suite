@@ -11,7 +11,6 @@ from dataclasses import dataclass
 
 GROUPS: tuple[str, ...] = ("setup", "new", "enhance", "fix", "iterate")
 
-
 @dataclass(frozen=True, slots=True)
 class Command:
     id: str
@@ -20,7 +19,6 @@ class Command:
     takes_target: bool
     reference: str
     summary: str
-
 
 COMMANDS: tuple[Command, ...] = (
     Command("shape", "new", "Shape", True, "reference/shape.md", "任务发现：把模糊需求收敛成可执行的设计范围"),
@@ -85,7 +83,6 @@ _KEYWORDS: tuple[tuple[str, str], ...] = (
     ("design system", "document"),
 )
 
-
 def by_id(command_id: str) -> Command:
     wanted = _ALIASES.get(command_id, command_id)
     for command in COMMANDS:
@@ -93,14 +90,11 @@ def by_id(command_id: str) -> Command:
             return command
     raise KeyError(f"unknown impeccable command {command_id!r}")
 
-
 def ids() -> tuple[str, ...]:
     return tuple(command.id for command in COMMANDS)
 
-
 def commands_in(group: str) -> tuple[Command, ...]:
     return tuple(command for command in COMMANDS if command.group == group)
-
 
 @dataclass(frozen=True, slots=True)
 class Route:
@@ -117,7 +111,6 @@ class Route:
             "reason": self.reason,
             "ambiguous_with": list(self.ambiguous_with),
         }
-
 
 def route(request: str) -> Route:
     """把一句自然语言请求路由到一条命令。

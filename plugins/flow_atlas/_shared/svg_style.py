@@ -30,25 +30,20 @@ KIND_MARK: dict[str, str] = {
     "job": "⚙",
 }
 
-
 def num(value: Any) -> str:
     """把坐标收成稳定的短十进制，避免产物字节抖动。"""
     if isinstance(value, float):
         return f"{value:.2f}".rstrip("0").rstrip(".")
     return str(value)
 
-
 def text(value: Any) -> str:
     return html.escape(str(value), quote=False)
-
 
 def attr(value: Any) -> str:
     return html.escape(str(value), quote=True)
 
-
 def palette_for(kind: str) -> dict[str, str]:
     return PALETTE.get(kind, PALETTE[""])
-
 
 def mark_for(kind: str) -> str:
     return KIND_MARK.get(kind, "")

@@ -15,7 +15,6 @@ class FloorItem:
     element: str
     requirement: str
 
-
 FLOOR: tuple[FloorItem, ...] = (
     FloorItem("text-scale", "排版", "字号阶梯成体系：display / title / body / caption 各司其职，不出现随手写的 15px"),
     FloorItem("measure", "排版", "正文行宽控制在 ~65ch 内，超宽必读崩"),
@@ -34,15 +33,12 @@ FLOOR: tuple[FloorItem, ...] = (
     FloorItem("responsive-collapse", "响应式", "窄屏下信息层级重排，而不是横向溢出"),
 )
 
-
 def items_for(element: str) -> tuple[FloorItem, ...]:
     return tuple(item for item in FLOOR if item.element == element)
-
 
 def blocking_after(changed: tuple[str, ...]) -> tuple[FloorItem, ...]:
     """改动涉及的元素类别，必须过对应底线。"""
     return tuple(item for item in FLOOR if item.element in changed)
-
 
 def evaluate(
     *,

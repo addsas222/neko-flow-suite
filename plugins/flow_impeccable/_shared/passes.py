@@ -15,13 +15,11 @@ WEB_TARGETS: tuple[str, ...] = ("desktop", "mobile")
 #: 上限：整个周期只允许这么多轮。
 MAX_ROUNDS = 2
 
-
 @dataclass(frozen=True, slots=True)
 class Pass:
     index: int
     name: str
     directive: str
-
 
 PLAN: tuple[Pass, ...] = (
     Pass(1, "build", "完整构建到可运行状态；不收尾、不半成品。"),
@@ -29,7 +27,6 @@ PLAN: tuple[Pass, ...] = (
     Pass(3, "fix", "把 inspect 报告的全部问题一次批量修完，不要逐条来回。"),
     Pass(4, "confirm", "最多再跑一轮确认，然后停止打磨。"),
 )
-
 
 @dataclass(slots=True)
 class Verification:
@@ -89,7 +86,6 @@ class Verification:
             "verdict": self.verdict(),
         }
 
-
 def plan_for(scope: str) -> tuple[Pass, ...]:
     """按工作范围给出轮次计划；scope 只影响第一批检查目标。"""
     if scope == "native":
@@ -98,7 +94,6 @@ def plan_for(scope: str) -> tuple[Pass, ...]:
         return (PLAN[0], PLAN[1], PLAN[2])
     return PLAN
 
-
 def batch_targets(scope: str) -> tuple[str, ...]:
     """检查必须一次批量做完的目标集。"""
     if scope == "native":
@@ -106,7 +101,6 @@ def batch_targets(scope: str) -> tuple[str, ...]:
     if scope == "component":
         return ("default", "dark", "dense")
     return WEB_TARGETS
-
 
 def violates_bounded_policy(rounds: int, open_findings: int) -> str | None:
     """开放式自检的判定：超过上限还带着未修项继续转圈。"""

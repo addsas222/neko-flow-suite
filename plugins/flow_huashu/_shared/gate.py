@@ -14,17 +14,14 @@ STYLE_SOURCES: tuple[str, ...] = (
     "信息图 20 种",
 )
 
-
 class GateViolation(Exception):
     """未经用户选定就进入执行的越权。"""
-
 
 @dataclass(frozen=True, slots=True)
 class Direction:
     label: str
     hypothesis: str
     medium: str = "web"
-
 
 @dataclass(slots=True)
 class Gate:
@@ -94,7 +91,6 @@ class Gate:
             "chosen": self.chosen,
             "rationale": self.rationale,
         }
-
 
 def style_hint_preserves_choice(hint: str) -> bool:
     """风格词只收窄解释空间，不豁免选择权——恒为 True，用于自检。"""

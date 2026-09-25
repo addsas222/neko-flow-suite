@@ -38,7 +38,6 @@ class Finding:
             "benefit": self.benefit,
         }
 
-
 @dataclass(slots=True)
 class Discovery:
     """一次只读调查的完整结果。"""
@@ -59,7 +58,6 @@ class Discovery:
             "findings": [f.to_dict() for f in self.findings],
             "coverage": dict(self.coverage),
         }
-
 
 def discover(root: Path, *, mode: str = "survey", scope: str = "broad") -> Discovery:
     """跑一次只读调查。mode 与 scope 只影响记录方式，不改变发现手段。"""
@@ -98,7 +96,6 @@ def discover(root: Path, *, mode: str = "survey", scope: str = "broad") -> Disco
             "tree": tree_summary(root),
         },
     )
-
 
 def record_from_finding(finding: Finding) -> ProofRecord:
     """把一条线索升级成待填写的证明记录。"""

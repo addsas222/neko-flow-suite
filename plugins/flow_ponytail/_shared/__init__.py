@@ -2,7 +2,7 @@
 
 from .intensity import LEVELS, Intensity, describe, normalize_level
 from .ladder import LadderRung, next_rung, rung_for, rungs
-from .review import DEBT_MARKER, DebtNote, ReviewFinding, ReviewReport, SIGNALS
+from .review import DEBT_MARKER, SIGNALS, DebtNote, ReviewFinding, ReviewReport
 from .review_engine import harvest_debt, review_diff, review_repo
 from .rules import HOST_ADAPTERS, agent_ruleset, ruleset_for_host
 

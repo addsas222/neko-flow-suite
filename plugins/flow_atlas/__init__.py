@@ -18,16 +18,18 @@ from .routers.specs import SpecRouter
 
 PANEL_CONTEXT = "atlas"
 
-
 @neko_plugin
 class FlowAtlasPlugin(NekoPluginBase):
     """工作流图谱插件。"""
 
+    # 声明 router 类，供主进程静态扫描 entry 元数据
+    __routers__ = [SpecRouter, MermaidRouter, GalleryRouter]
+
     def __init__(self, ctx: Any) -> None:
         super().__init__(ctx)
-        self.include_router(SpecRouter())
-        self.include_router(MermaidRouter())
-        self.include_router(GalleryRouter())
+        # 注册 routers — 必须在 __init__ 中，collect_entries 在 startup 之前调用
+        for router_cls in self.__routers__:
+            self.include_router(router_cls())
 
     @ui.context(id=PANEL_CONTEXT)
     async def atlas_context(self) -> dict:

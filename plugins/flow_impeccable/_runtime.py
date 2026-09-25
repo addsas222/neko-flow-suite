@@ -6,8 +6,6 @@
 
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 from typing import Annotated
 
 try:
@@ -21,9 +19,12 @@ try:
     )
 except ImportError:
     NekoPluginBase = object  # type: ignore[assignment,misc]
-    Ok = lambda data: {"ok": True, "data": data}  # type: ignore[assignment]
-    Err = lambda error: {"ok": False, "error": str(error)}  # type: ignore[assignment]
-    neko_plugin = lambda cls: cls  # type: ignore[assignment]
+    def Ok(data):  # type: ignore[assignment]
+        return {"ok": True, "data": data}
+    def Err(error):  # type: ignore[assignment]
+        return {"ok": False, "error": str(error)}
+    def neko_plugin(cls):  # type: ignore[assignment]
+        return cls
 
     class _UiFallback:
         """ui.context / ui.action 的本地兜底，签名与插件 SDK 一致。"""
@@ -53,14 +54,9 @@ except ImportError:
 
         return wrap
 
-
-_HERE = Path(__file__).resolve().parent
-if str(_HERE) not in sys.path:
-    sys.path.insert(0, str(_HERE))
-
-from _shared.commands import ids, route  # noqa: E402
-from _shared.craftfloor import evaluate as evaluate_floor  # noqa: E402
-from _shared.passes import (  # noqa: E402
+from ._shared.commands import ids, route  # noqa: E402
+from ._shared.craftfloor import evaluate as evaluate_floor  # noqa: E402
+from ._shared.passes import (  # noqa: E402
     Verification,
     batch_targets,
     plan_for,
@@ -90,7 +86,7 @@ class FlowImpeccablePlugin(NekoPluginBase):
     @ui.action(id="commands", label="命令表")
     @plugin_entry(id="commands", name="命令表", description="列出全部命令与分组。")
     async def commands(self) -> dict:
-        from _shared.commands import COMMANDS
+        from ._shared.commands import COMMANDS
 
         return Ok(
             {
@@ -154,7 +150,6 @@ class FlowImpeccablePlugin(NekoPluginBase):
                 ),
             )
         )
-
 
     # -- Hosted UI ------------------------------------------------------
 

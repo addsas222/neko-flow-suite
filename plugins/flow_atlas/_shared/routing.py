@@ -40,7 +40,6 @@ def route_edges(diagram: Diagram, nodes: list[PlacedNode]) -> list[RoutedEdge]:
         )
     return routed
 
-
 def edge_path(edge: Any, source: PlacedNode, target: PlacedNode) -> list[Point]:
     delta = target.layer - source.layer
     if abs(delta) == 1:
@@ -59,7 +58,6 @@ def edge_path(edge: Any, source: PlacedNode, target: PlacedNode) -> list[Point]:
         start, end = source.bottom, target.bottom
     mid_y = (start.y + end.y) / 2.0
     return [start, Point(start.x, mid_y), Point(end.x, mid_y), end]
-
 
 def place_groups(diagram: Diagram, nodes: list[PlacedNode]) -> list[PlacedGroup]:
     placed: list[PlacedGroup] = []

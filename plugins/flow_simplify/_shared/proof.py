@@ -23,7 +23,6 @@ REQUIRED_FIELDS = (
     "net_complexity",
 )
 
-
 @dataclass(slots=True)
 class ProofRecord:
     """一条候选的完整证明。"""
@@ -67,7 +66,6 @@ class ProofRecord:
             "actionable": self.is_actionable(),
         }
 
-
 class ProofLedger:
     """一次审计或修改会话内的证明记录集合。"""
 
@@ -98,7 +96,6 @@ class ProofLedger:
             "records": [record.to_dict() for record in self.ranked()],
             "unresolved": [record.subject for record in self.unresolved()],
         }
-
 
 def rank(records: list[ProofRecord]) -> list[ProofRecord]:
     """见 ProofLedger.ranked。"""

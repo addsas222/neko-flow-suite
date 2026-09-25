@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 from plugin.sdk.plugin import Err, Ok, PluginRouter, plugin_entry, ui
 
 from .._shared.artifacts import digest, snapshot_spec, write_artifact

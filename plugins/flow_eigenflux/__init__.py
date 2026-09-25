@@ -14,7 +14,14 @@ from __future__ import annotations
 from typing import Any
 
 try:  # 在 N.E.K.O 宿主内
-    from plugin.sdk.plugin import Err, NekoPluginBase, SdkError, neko_plugin, plugin_entry
+    from plugin.sdk.plugin import (
+        Err,
+        NekoPluginBase,
+        SdkError,
+        neko_plugin,
+        plugin_entry,
+        ui,
+    )
 except ImportError:  # 允许在套件仓库内单独导入做静态检查与冒烟
 
     class SdkError(Exception):
@@ -38,6 +45,27 @@ except ImportError:  # 允许在套件仓库内单独导入做静态检查与冒
 
         return wrap
 
+    class _UiFallback:
+        """ui.context / ui.action 的本地兜底，签名与插件 SDK 一致。"""
+
+        @staticmethod
+        def context(**kwargs: Any):
+            def wrap(func: Any) -> Any:
+                func._ui_context = kwargs
+                return func
+
+            return wrap
+
+        @staticmethod
+        def action(**kwargs: Any):
+            def wrap(func: Any) -> Any:
+                func._ui_action = kwargs
+                return func
+
+            return wrap
+
+    ui = _UiFallback  # type: ignore[assignment,misc]
+
     class _LocalBase:
         """本地兜底基类：与插件 SDK 的 NekoPluginBase(ctx) 保持同形。"""
 
@@ -46,7 +74,6 @@ except ImportError:  # 允许在套件仓库内单独导入做静态检查与冒
 
     NekoPluginBase = _LocalBase  # type: ignore[assignment,misc]
 
-
 UNAVAILABLE_REASON = (
     "上游许可证未识别：phronesis-io/eigenflux 的 license.key=other、"
     "spdx=NOASSERTION，GitHub 无法识别为任何标准开源许可证，"
@@ -54,11 +81,11 @@ UNAVAILABLE_REASON = (
     "flow_eigenflux 目前只是来源登记，没有可供调用的功能。"
 )
 
-
 @neko_plugin
 class FlowEigenfluxPlugin(NekoPluginBase):
     """占位插件：唯一入口只解释自己为什么不可用。"""
 
+    @ui.action(id="status", label="状态")
     @plugin_entry(
         id="status",
         name="状态",

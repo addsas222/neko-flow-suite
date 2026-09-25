@@ -24,15 +24,12 @@ for _path in (str(HERE), str(HERE.parent)):
     if _path not in sys.path:
         sys.path.insert(0, _path)
 
-
 def _plugin_module():
     """sys.path 就绪之后才导入；模块级导入会踩 E402。"""
     return importlib.import_module("flow_eigenflux")
 
-
 def _entry_class():
     return getattr(_plugin_module(), "FlowEigenfluxPlugin")
-
 
 def test_manifest_is_a_valid_but_disabled_plugin() -> None:
     manifest = HERE / "plugin.toml"
@@ -57,20 +54,17 @@ def test_manifest_is_a_valid_but_disabled_plugin() -> None:
     assert "store" not in plugin
     assert "i18n" not in plugin
 
-
 def test_entry_class_is_importable_and_declares_one_entry() -> None:
     assert _plugin_module().FlowEigenfluxPlugin is _entry_class()
     meta = getattr(_entry_class().status, "_plugin_entry", None)
     assert meta is not None, "status 必须带 @plugin_entry 元数据"
     assert meta["id"] == "status"
 
-
 async def _call_status() -> dict:
     plugin = _entry_class()(None)
     result = await plugin.status()
     # 宿主里的 Err 可能返回 Result 对象；套件仓库里固定是 dict。
     return result if isinstance(result, dict) else dict(vars(result))
-
 
 def test_only_entry_always_fails_with_the_license_reason() -> None:
     payload = asyncio.run(_call_status())
@@ -79,7 +73,6 @@ def test_only_entry_always_fails_with_the_license_reason() -> None:
     assert "NOASSERTION" in error
     assert "未识别" in error
     assert "不移植" in error
-
 
 def test_no_upstream_code_is_shipped() -> None:
     assert not (HERE / "_shared").exists(), "不移植的插件不该有 _shared 实现层"
@@ -90,13 +83,11 @@ def test_no_upstream_code_is_shipped() -> None:
     ]
     assert [path.name for path in shipped] == ["__init__.py"]
 
-
 def test_plugin_is_documented_as_not_portable() -> None:
     text = (HERE / "SOURCE.md").read_text(encoding="utf-8")
     assert "phronesis-io/eigenflux" in text
     assert "NOASSERTION" in text
     assert "不移植" in text
-
 
 def test_notice_says_reference_only() -> None:
     text = (HERE / "NOTICE").read_text(encoding="utf-8")

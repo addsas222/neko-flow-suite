@@ -12,10 +12,10 @@ from .review import (
     _SPECULATIVE,
     _UNUSED_PARAM,
     DEBT_MARKER,
+    SIGNALS,
     DebtNote,
     ReviewFinding,
     ReviewReport,
-    SIGNALS,
 )
 
 MAX_FINDINGS = 200
@@ -23,7 +23,6 @@ SKIP_DIRS = {
     ".git", ".venv", "venv", "node_modules", "__pycache__", ".pytest_cache",
     ".ruff_cache", ".mypy_cache", "dist", "build", "vendor", ".tox",
 }
-
 
 def review_diff(diff: str, *, target: str = "diff") -> ReviewReport:
     """审查一段 diff 文本：只看新增行。"""
@@ -40,7 +39,6 @@ def review_diff(diff: str, *, target: str = "diff") -> ReviewReport:
     report.findings = report.findings[:MAX_FINDINGS]
     report.delete_list = _delete_list(report)
     return report
-
 
 def review_repo(root: str, *, limit: int = 400) -> ReviewReport:
     """对仓库做只读审查。"""
@@ -73,7 +71,6 @@ def review_repo(root: str, *, limit: int = 400) -> ReviewReport:
     report.delete_list = _delete_list(report)
     return report
 
-
 def _unused_parameter_findings(text: str, rel: str) -> list[ReviewFinding]:
     """只在形参确实没有出现在函数体里时才报。"""
     lines = text.splitlines()
@@ -103,7 +100,6 @@ def _unused_parameter_findings(text: str, rel: str) -> list[ReviewFinding]:
                 )
     return findings
 
-
 def _function_body(lines: list[str], start: int) -> str:
     indent = len(lines[start]) - len(lines[start].lstrip())
     collected: list[str] = []
@@ -116,7 +112,6 @@ def _function_body(lines: list[str], start: int) -> str:
         collected.append(line)
     return "\n".join(collected)
 
-
 def _dedupe(findings: list[ReviewFinding]) -> list[ReviewFinding]:
     seen: set[tuple[str, int, str]] = set()
     unique: list[ReviewFinding] = []
@@ -127,7 +122,6 @@ def _dedupe(findings: list[ReviewFinding]) -> list[ReviewFinding]:
         seen.add(key)
         unique.append(finding)
     return unique
-
 
 def _scan_line(line: str, path: str, line_no: int) -> list[ReviewFinding]:
     found: list[ReviewFinding] = []
@@ -159,7 +153,6 @@ def _scan_line(line: str, path: str, line_no: int) -> list[ReviewFinding]:
             found.append(_finding(code, path, line_no, stripped[:48], "stdlib reimplementation", delete))
     return found
 
-
 def _finding(
     code: str, path: str, line_no: int, subject: str, evidence: str, delete: str
 ) -> ReviewFinding:
@@ -172,14 +165,12 @@ def _finding(
         delete=delete,
     )
 
-
 def _reimplements_stdlib(stripped: str) -> bool:
     """只对函数定义声明本身报警，避免把普通调用也算成重写。"""
     lowered = stripped.lower()
     if not lowered.startswith(("def ", "async def ")):
         return False
     return any(name in lowered for name in ("flatten", "chunk", "dedupe", "merge_dict", "deep_get"))
-
 
 def _delete_list(report: ReviewReport) -> list[str]:
     seen: list[str] = []
@@ -188,7 +179,6 @@ def _delete_list(report: ReviewReport) -> list[str]:
         if entry not in seen:
             seen.append(entry)
     return seen
-
 
 def harvest_debt(report: ReviewReport) -> dict[str, Any]:
     """把技术债标记汇总成台账，让"以后再改"不会变成"永远不改"。"""

@@ -7,7 +7,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 PAGE_KINDS: tuple[str, ...] = (
     "landing-saas",
@@ -64,7 +64,6 @@ OVERRIDES: dict[str, str] = {
     "kids": "playful",
 }
 
-
 @dataclass(slots=True)
 class DesignRead:
     """一句话 design read 的结构化形式。"""
@@ -94,14 +93,12 @@ class DesignRead:
             "read": self.render(),
         }
 
-
 class BriefAmbiguous(Exception):
     """需求含混到 design read 会分叉时抛出；上游要求只问一个问题。"""
 
     def __init__(self, question: str) -> None:
         super().__init__(question)
         self.question = question
-
 
 @dataclass(slots=True)
 class Brief:
@@ -124,10 +121,8 @@ class Brief:
             *self.references,
         )
 
-
 def _normalise(value: str) -> str:
     return value.strip().lower().replace(" ", "-").replace("_", "-")
-
 
 def infer(brief: Brief, *, family: str = "") -> DesignRead:
     """从需求推断 design read。
@@ -177,7 +172,6 @@ def infer(brief: Brief, *, family: str = "") -> DesignRead:
         signals=tuple(str(s) for s in brief.signals),
     )
 
-
 def _family_for(page_kind: str, vibe: str) -> str:
     """把 design read 映射到上游第 2 节的落点。"""
     if vibe == "trust-first":
@@ -196,7 +190,6 @@ def _family_for(page_kind: str, vibe: str) -> str:
         return "native CSS + custom typography"
     return "Tailwind v4 utilities + Geist + restrained motion"
 
-
 #: 上游第 0.D 节的 LLM 默认审美清单，用于自检。
 ANTI_DEFAULTS: tuple[str, ...] = (
     "AI-purple gradients",
@@ -206,7 +199,6 @@ ANTI_DEFAULTS: tuple[str, ...] = (
     "infinite-loop micro-animations everywhere",
     "Inter + slate-900",
 )
-
 
 def anti_default_report(read: DesignRead) -> list[str]:
     """返回该 design read 下需要主动绕开的默认项。"""

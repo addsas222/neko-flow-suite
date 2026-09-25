@@ -14,7 +14,6 @@ def _read(path: Path) -> str | None:
     except OSError:
         return None
 
-
 def scan_repository(root: Path, *, limit: int = 400) -> ScanReport:
     """对 root 做一次只读发现，返回候选线索与盲区。"""
     import re
@@ -77,7 +76,6 @@ def scan_repository(root: Path, *, limit: int = 400) -> ScanReport:
     report.blind_spots = _blind_spots(files)
     return report
 
-
 def _blind_spots(files: list[Path]) -> list[str]:
     spots = [
         "dynamic registration and entry-point dispatch",
@@ -89,13 +87,11 @@ def _blind_spots(files: list[Path]) -> list[str]:
         spots.insert(0, "no Python source found in scope")
     return spots
 
-
 def _relative(root: Path, path: Path) -> str:
     try:
         return str(path.relative_to(root))
     except ValueError:  # pragma: no cover - defensive
         return str(path)
-
 
 def tree_summary(root: Path, *, max_depth: int = 3) -> dict[str, Any]:
     """给面板用的浅层目录概览。"""

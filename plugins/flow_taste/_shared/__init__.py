@@ -35,7 +35,7 @@ from .dials import (
     normalize,
 )
 from .gates import GATES, Gate, GateReport, GateResult, evaluate
-from .lint import RULES, Report, Finding, lint, lint_css, lint_files, lint_html, rule_ids
+from .lint import RULES, Finding, Report, lint, lint_css, lint_files, lint_html, rule_ids
 from .rules_core import SEVERITY_BLOCK, SEVERITY_DEMOTE, SEVERITY_WARN
 from .systems import AESTHETICS, REAL_SYSTEMS, SystemChoice, SystemDecision, choose
 

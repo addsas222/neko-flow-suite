@@ -1,0 +1,47 @@
+chore(suite): clear the whole ruff backlog and expose every entry to the UI
+
+Two things were asked for: clean up the lint debt across the repository, and
+fill in the missing @ui.action exposures.
+
+Ruff. baseline was 61 findings across the suite. All ten plugins now report
+zero. Beyond the expected style findings this surfaced four genuine defects
+that had been sitting there:
+
+  - flow_atlas/_shared/layout.py and routers/mermaid.py used typing.Any
+    without importing it (F821 x5). Harmless at runtime because annotations
+    are strings, but any get_type_hints() call would have blown up.
+  - flow_viking/_shared/fsstore.py referenced PathError without importing it
+    (F821 x2), same class of bug.
+  - flow_atlas/_shared/mermaid_sequence.py redefined SpecError and Any.
+  - flow_simplify/routers/change.py declared @ui.action(id="verdicts") on an
+    entry whose id is verdict_guide, so the panel could never have called it.
+
+The three @runtime.py SDK fallbacks also assigned lambdas to Ok / Err /
+neko_plugin (E731); those are now real defs. The four plugins that had no
+ruff.toml (taste, huashu, impeccable, designmd) now have the standard one,
+which is what let the debt be seen in the first place. Note that --ignore-noqa
+made no difference to any of this, despite that being what the README
+documents: the existing noqa comments were never suppressing anything.
+
+Entry exposure. flow_eigenflux, flow_ponytail and flow_simplify exposed only
+part of their entries, so parts of those panels had nothing to dispatch to.
+Every entry in the suite now has exactly one @ui.action with a matching id --
+97 entries across the ten plugins. The eigenflux fallback also gained the ui
+shim the others already had, otherwise the placeholder entry could not be
+imported outside the host.
+
+Along the way flow_atlas and flow_evomap picked up a __routers__ class
+attribute for static entry scanning, and the four design plugins moved to
+relative imports so the sys.path shim is gone. Those came from a parallel
+edit session rather than from this work; they are included because they are
+already in the working tree and the suite is green with them, but they are
+called out here so the provenance stays clear.
+
+tools/check_suite.py is a new guard covering both dimensions: exactly one
+@ui.action per entry, no action id without an entry, no duplicates, and a
+clean ruff pass per plugin.
+
+Verified: 133 tests pass, smoke 10/10, check_tsx 8 panels / 0 problems,
+check_suite OK. All ten plugins re-synced into the N.E.K.O runtime plugins
+directory; the only difference left there is host-generated state
+(data/viking/viking.json), which is deliberately not overwritten.

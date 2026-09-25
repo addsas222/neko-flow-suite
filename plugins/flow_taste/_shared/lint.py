@@ -10,6 +10,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
+from .rules_copy import RULES_COPY
 from .rules_core import (
     RULES_CORE,
     SEVERITY_BLOCK,
@@ -17,10 +18,8 @@ from .rules_core import (
     SEVERITY_WARN,
     Rule,
 )
-from .rules_copy import RULES_COPY
 
 RULES: tuple[Rule, ...] = RULES_CORE + RULES_COPY
-
 
 @dataclass(slots=True)
 class Finding:
@@ -44,7 +43,6 @@ class Finding:
             "evidence": self.evidence,
             "override": self.override,
         }
-
 
 @dataclass(slots=True)
 class Report:
@@ -90,13 +88,11 @@ class Report:
             )
         return "\n".join(lines)
 
-
 def _line_offsets(text: str) -> list[int]:
     offsets = [0]
     for line in text.splitlines(keepends=True):
         offsets.append(offsets[-1] + len(line))
     return offsets
-
 
 def lint(text: str, *, where: str = "snippet") -> Report:
     """扫描一段 HTML/CSS/TSX 源码，返回可阻断的报告。"""
@@ -129,7 +125,6 @@ def lint(text: str, *, where: str = "snippet") -> Report:
     report.where = where
     return report
 
-
 def lint_files(paths: list[str]) -> Report:
     """扫描若干文件并汇总成一个报告。"""
     from pathlib import Path
@@ -141,18 +136,14 @@ def lint_files(paths: list[str]) -> Report:
     combined.scanned = len(paths)
     return combined
 
-
 def lint_html(text: str) -> Report:
     return lint(text)
-
 
 def lint_css(text: str) -> Report:
     return lint(text)
 
-
 def rule_ids() -> tuple[str, ...]:
     return tuple(rule.id for rule in RULES)
-
 
 def rules_for(severity: str) -> tuple[Rule, ...]:
     return tuple(rule for rule in RULES if rule.severity == severity)

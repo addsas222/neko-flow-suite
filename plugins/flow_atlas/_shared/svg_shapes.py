@@ -12,10 +12,8 @@ ARROW_DEF = (
     '<path class="atlas-arrow-head" d="M0,0 L10,5 L0,10 z"></path></marker>'
 )
 
-
 def arrow_defs() -> str:
     return ARROW_DEF
-
 
 def render_group(group: Any) -> str:
     return (
@@ -26,7 +24,6 @@ def render_group(group: Any) -> str:
         f'y="{num(group.box.y + 18)}">{text(group.label or group.id)}</text></g>'
     )
 
-
 def render_lifelines(placed: Any) -> str:
     parts = ['<g class="atlas-lifelines">']
     for node in placed.nodes:
@@ -36,7 +33,6 @@ def render_lifelines(placed: Any) -> str:
         )
     parts.append("</g>")
     return "".join(parts)
-
 
 def render_edge(edge: Any) -> str:
     if len(edge.points) < 2:
@@ -56,13 +52,11 @@ def render_edge(edge: Any) -> str:
         f"{label}</g>"
     )
 
-
 def path_of(points: Any) -> str:
     commands = [f"M {num(points[0].x)} {num(points[0].y)}"]
     for point in points[1:]:
         commands.append(f"L {num(point.x)} {num(point.y)}")
     return " ".join(commands)
-
 
 def render_node(node: Any) -> str:
     style = palette_for(node.kind)

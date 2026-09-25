@@ -16,7 +16,8 @@ from .facts import (
 )
 from .gate import STYLE_SOURCES, Direction, Gate, GateViolation, style_hint_preserves_choice
 from .roles import LEAD_BY_MEDIUM, ROLES, Role, check_coverage, rotation_for
-from .routing import ENTRIES, Route, route as route_task
+from .routing import ENTRIES, Route
+from .routing import route as route_task
 
 __all__ = [
     "BANNED_PATTERNS",

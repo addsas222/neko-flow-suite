@@ -28,7 +28,6 @@ MAX_LABEL_CHARS = 96
 _NODE_ID_RE = re.compile(r"^[A-Za-z0-9_.-]{1,48}$")
 _ANIMATIONS = ("none", "trace")
 
-
 @dataclass(slots=True)
 class Node:
     """图中的主体。"""
@@ -59,7 +58,6 @@ class Node:
             "primary": self.primary,
             "tags": list(self.tags),
         }
-
 
 @dataclass(slots=True)
 class Edge:
@@ -94,7 +92,6 @@ class Edge:
             "detail": self.detail,
         }
 
-
 @dataclass(slots=True)
 class Group:
     """分区块，把节点收进同一个语义容器。"""
@@ -110,7 +107,6 @@ class Group:
     def to_dict(self) -> dict[str, Any]:
         return {"id": self.id, "label": self.label, "detail": self.detail}
 
-
 @dataclass(slots=True)
 class Participant:
     """时序图的会话方。"""
@@ -123,7 +119,6 @@ class Participant:
 
     def to_dict(self) -> dict[str, Any]:
         return {"id": self.id, "label": self.label}
-
 
 @dataclass(slots=True)
 class Message:
@@ -148,15 +143,12 @@ class Message:
             "detail": self.detail,
         }
 
-
-
 def _as_list(value: Any) -> list[Any]:
     if value is None:
         return []
     if not isinstance(value, list):
         raise SpecError("expected a JSON array")
     return value
-
 
 def build_node(entry: Any) -> Node:
     if not isinstance(entry, dict):
@@ -173,7 +165,6 @@ def build_node(entry: Any) -> Node:
         primary=bool(entry.get("primary", False)),
         tags=tuple(str(t) for t in _as_list(entry.get("tags"))),
     )
-
 
 def build_edge(entry: Any) -> Edge:
     if not isinstance(entry, dict):
@@ -192,7 +183,6 @@ def build_edge(entry: Any) -> Edge:
         detail=str(entry.get("detail", "") or ""),
     )
 
-
 def build_group(entry: Any) -> Group:
     if not isinstance(entry, dict):
         raise SpecError("each group must be a JSON object")
@@ -205,7 +195,6 @@ def build_group(entry: Any) -> Group:
         detail=str(entry.get("detail", "") or ""),
     )
 
-
 def build_participant(entry: Any) -> Participant:
     if not isinstance(entry, dict):
         raise SpecError("each participant must be a JSON object")
@@ -213,7 +202,6 @@ def build_participant(entry: Any) -> Participant:
     if not isinstance(pid, str) or not pid.strip():
         raise SpecError("participant.id is required")
     return Participant(id=pid.strip(), label=str(entry.get("label", "") or ""))
-
 
 def build_message(entry: Any) -> Message:
     if not isinstance(entry, dict):
@@ -229,7 +217,6 @@ def build_message(entry: Any) -> Message:
         kind=str(entry.get("kind", "sync") or "sync"),
         detail=str(entry.get("detail", "") or ""),
     )
-
 
 def check_references(diagram: Any) -> None:
     """所有关系必须指向已声明的主体。"""

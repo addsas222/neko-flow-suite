@@ -9,10 +9,9 @@ import json
 from pathlib import Path
 from typing import Any
 
-from .fsstore import VirtualFS, VFile
+from .fsstore import VFile, VirtualFS
 
 STORE_NAME = "viking.json"
-
 
 def load(path: Path) -> VirtualFS:
     """从磁盘恢复树；文件缺失或损坏时返回空树。"""
@@ -47,7 +46,6 @@ def load(path: Path) -> VirtualFS:
         )
     return fs
 
-
 def save(fs: VirtualFS, path: Path) -> bool:
     """原子写盘。"""
     directory = Path(path)
@@ -68,7 +66,6 @@ def save(fs: VirtualFS, path: Path) -> bool:
     except OSError:
         return False
     return True
-
 
 def _file_payload(file: VFile) -> dict[str, Any]:
     return {

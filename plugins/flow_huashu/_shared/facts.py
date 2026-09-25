@@ -33,7 +33,6 @@ TRIGGERS: tuple[str, ...] = (
     "给某个具体产品/公司做设计物料",
 )
 
-
 @dataclass(frozen=True, slots=True)
 class Claim:
     text: str
@@ -51,7 +50,6 @@ class Claim:
             "violation": self.violation,
             "needs_verification": self.needs_verification,
         }
-
 
 def scan(text: str) -> list[Claim]:
     """扫一段文案，挑出未经验证的事实断言。"""
@@ -72,21 +70,18 @@ def scan(text: str) -> list[Claim]:
                 break
     return claims
 
-
 def _extract_subject(sentence: str) -> str:
     match = re.search(r"[A-Za-z][A-Za-z0-9 ._-]{1,30}", sentence)
     return match.group(0).strip() if match else sentence[:24]
-
 
 def verification_checklist(subject: str) -> list[str]:
     """开工前的硬流程（优先级高于 clarifying questions）。"""
     return [
         f"检索「{subject}」+ 最新时间词（latest / launch date / release / specs）",
         "读 1-3 条权威结果，确认：存在性 / 发布状态 / 最新版本号 / 关键规格",
-        f"把事实写进项目的 product-facts.md，不靠记忆",
+        "把事实写进项目的 product-facts.md，不靠记忆",
         "搜不到或结果模糊 → 问用户，而不是自行假设",
     ]
-
 
 def must_verify(text: str) -> bool:
     return bool(scan(text))

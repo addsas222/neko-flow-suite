@@ -14,7 +14,6 @@ _FRONT_MATTER = re.compile(r"\A---\s*\n(.*?)\n---\s*\n", re.DOTALL)
 #: catalog 的顶层 token 分组。
 TOKEN_GROUPS: tuple[str, ...] = ("colors", "typography", "spacing", "radius", "shadow", "motion")
 
-
 @dataclass(slots=True)
 class DesignEntry:
     slug: str
@@ -76,7 +75,6 @@ class DesignEntry:
              " ".join(self.colors), " ".join(self.typography)]
         ).lower()
 
-
 def _split_body(
     front_matter: str,
 ) -> tuple[dict[str, str], dict[str, dict[str, object]]]:
@@ -116,7 +114,6 @@ def _split_body(
 
     return flat, root
 
-
 def flatten(group: dict[str, object], prefix: str = "") -> dict[str, str]:
     """把嵌套 token 树拍平成 `a-b-c: value` 路径。"""
     out: dict[str, str] = {}
@@ -127,7 +124,6 @@ def flatten(group: dict[str, object], prefix: str = "") -> dict[str, str]:
         else:
             out[path] = str(value)
     return out
-
 
 def parse_design_md(text: str, *, slug: str = "", source_path: str = "") -> DesignEntry:
     """解析一份 DESIGN.md。"""
@@ -157,7 +153,6 @@ def parse_design_md(text: str, *, slug: str = "", source_path: str = "") -> Desi
         raw_groups=grouped,
         source_path=source_path,
     )
-
 
 def _looks_like_colour(value: str) -> bool:
     return bool(re.fullmatch(r"#[0-9a-fA-F]{3,8}", value.strip()))

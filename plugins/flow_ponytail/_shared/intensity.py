@@ -16,7 +16,6 @@ DESCRIPTIONS: dict[str, str] = {
     "ultra": "在 full 之上追加契约面与迁移成本检查",
 }
 
-
 @dataclass(frozen=True, slots=True)
 class Intensity:
     """一次会话使用的强度。"""
@@ -39,7 +38,6 @@ class Intensity:
             "description": DESCRIPTIONS.get(self.level, ""),
         }
 
-
 def normalize_level(value: str) -> str:
     """把任意输入收敛到受支持的等级；无法识别时回落到 full。"""
     wanted = (value or "").strip().lower()
@@ -55,7 +53,6 @@ def normalize_level(value: str) -> str:
     }
     wanted = aliases.get(wanted, "full")
     return wanted if wanted in LEVELS else "full"
-
 
 def describe(level: str) -> str:
     return DESCRIPTIONS.get(normalize_level(level), DESCRIPTIONS["full"])

@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from plugin.sdk.plugin import Ok, NekoPluginBase, lifecycle, neko_plugin, plugin_entry, tr, ui
+from plugin.sdk.plugin import NekoPluginBase, Ok, lifecycle, neko_plugin, plugin_entry, tr, ui
 
 from .routers.change import ChangeRouter
 from .routers.survey import SurveyRouter
@@ -19,11 +19,16 @@ from .routers.survey import SurveyRouter
 class FlowSimplifyPlugin(NekoPluginBase):
     """代码瘦身插件。"""
 
+    # 声明 router 类，供主进程静态扫描 entry 元数据
+    __routers__ = [SurveyRouter, ChangeRouter]
+
     def __init__(self, ctx: Any) -> None:
         super().__init__(ctx)
-        self.include_router(SurveyRouter())
-        self.include_router(ChangeRouter())
+        # 注册 routers — 必须在 __init__ 中，collect_entries 在 startup 之前调用
+        for router_cls in self.__routers__:
+            self.include_router(router_cls())
 
+    @ui.action(id="guide", label="使用方式")
     @plugin_entry(
         id="guide",
         name="使用方式",

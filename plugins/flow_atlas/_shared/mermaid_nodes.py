@@ -10,7 +10,6 @@ from .nodes import MAX_LABEL_CHARS
 
 _ID_OK = re.compile(r"^[A-Za-z0-9_.-]{1,48}$")
 
-
 def ensure(nodes: dict[str, dict[str, Any]], statement: str) -> None:
     """把一个 Mermaid 语句登记为节点，尽量取出显示标签。"""
     text = statement.strip().rstrip(";")
@@ -34,12 +33,10 @@ def ensure(nodes: dict[str, dict[str, Any]], statement: str) -> None:
         "primary": True,
     }
 
-
 def strip_label(statement: str) -> str:
     """取 -->|label| 形态的标签；没有就返回空串。"""
     match = re.search(r"\|([^|]*)\|", statement)
     return match.group(1).strip() if match else ""
-
 
 def split_message(statement: str) -> tuple[str, str, str, str] | None:
     """把一条时序消息拆成 来源 / 箭头 / 目标 / 文本。

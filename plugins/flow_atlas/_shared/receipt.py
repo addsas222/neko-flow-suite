@@ -9,7 +9,6 @@ from typing import Any
 SEVERITY_ERROR = "error"
 SEVERITY_WARNING = "warning"
 
-
 @dataclass(slots=True)
 class Issue:
     """一条可行动的诊断。"""
@@ -28,7 +27,6 @@ class Issue:
             "message": self.message,
             "supported_fixes": list(self.supported_fixes),
         }
-
 
 @dataclass(slots=True)
 class Receipt:
@@ -64,7 +62,6 @@ class Receipt:
             "spec_bytes": self.spec_bytes,
         }
 
-
 def record(receipt: Receipt, check: str, ok: bool, issue: Issue | None = None) -> None:
     """把一次检查的结果记入回执。"""
     if ok:
@@ -73,7 +70,6 @@ def record(receipt: Receipt, check: str, ok: bool, issue: Issue | None = None) -
     receipt.failed.append(check)
     if issue is not None:
         receipt.errors.append(issue)
-
 
 def digest(payload: bytes) -> tuple[str, int]:
     """返回 payload 的 SHA-256 与字节数。"""

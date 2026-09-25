@@ -11,6 +11,7 @@ from typing import Any
 
 from .errors import SpecError
 from .nodes import (
+    _ANIMATIONS,
     DIAGRAM_TYPES,
     MAX_CURATED_VIEWS,
     MAX_EDGES,
@@ -22,7 +23,6 @@ from .nodes import (
     Message,
     Node,
     Participant,
-    _ANIMATIONS,
     build_edge,
     build_group,
     build_message,
@@ -153,14 +153,12 @@ class Diagram:
             },
         }
 
-
 def _as_list(value: Any) -> list[Any]:
     if value is None:
         return []
     if not isinstance(value, list):
         raise SpecError("expected a JSON array")
     return value
-
 
 def from_dict(raw: Any) -> Diagram:
     """见 Diagram.from_dict。"""

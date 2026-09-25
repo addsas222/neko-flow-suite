@@ -19,16 +19,19 @@ from .routers.memory import MemoryRouter
 
 PANEL_CONTEXT = "viking"
 
-
 @neko_plugin
 class FlowVikingPlugin(NekoPluginBase):
     """上下文数据库插件。"""
 
+    # 声明 router 类，供主进程静态扫描 entry 元数据
+    __routers__ = [FsRouter, MemoryRouter]
+
     def __init__(self, ctx: Any) -> None:
         super().__init__(ctx)
         self._fs: VirtualFS | None = None
-        self.include_router(FsRouter())
-        self.include_router(MemoryRouter())
+        # 注册 routers — 必须在 __init__ 中，collect_entries 在 startup 之前调用
+        for router_cls in self.__routers__:
+            self.include_router(router_cls())
 
     # -- state ----------------------------------------------------------
 

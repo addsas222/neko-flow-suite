@@ -31,7 +31,6 @@ def render_body(diagram: Any, placed: Any) -> str:
     parts.append("</svg>")
     return "\n".join(parts)
 
-
 def render_views(diagram: Any) -> str:
     buttons: list[str] = []
     for view in diagram.views:
@@ -48,7 +47,6 @@ def render_views(diagram: Any) -> str:
         'aria-pressed="true">All</button>'
     )
     return "".join(buttons)
-
 
 def export_payload(diagram: Any, placed: Any) -> str:
     """给运行时的稳定数据：含邻接关系，不含布局内部字段。"""

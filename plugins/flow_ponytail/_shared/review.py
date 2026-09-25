@@ -7,7 +7,6 @@ from __future__ import annotations
 
 import re
 from dataclasses import dataclass, field
-from pathlib import Path
 from typing import Any
 
 DEBT_MARKER = "ponytail:"
@@ -45,7 +44,6 @@ _UNUSED_PARAM = re.compile(r"^\s*(?:async\s+)?def\s+\w+\(([^)]*)\)")
 _PLACEHOLDER = re.compile(r"\b(?:TODO|FIXME|XXX|HACK)\b")
 _CONFIG_DEFAULT = re.compile(r"^\s*[A-Za-z_][A-Za-z0-9_]*\s*=\s*(?:os\.getenv|CONFIG|SETTINGS)")
 
-
 @dataclass(slots=True)
 class ReviewFinding:
     """一条可行动的过度设计信号。"""
@@ -69,7 +67,6 @@ class ReviewFinding:
             "verified_by": self.verified_by,
         }
 
-
 @dataclass(slots=True)
 class DebtNote:
     """一条被推迟的简化，带标记与行号。"""
@@ -80,7 +77,6 @@ class DebtNote:
 
     def to_dict(self) -> dict[str, Any]:
         return {"path": self.path, "line": self.line, "text": self.text}
-
 
 @dataclass(slots=True)
 class ReviewReport:

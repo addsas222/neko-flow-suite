@@ -87,10 +87,8 @@ class CatalogRouter(PluginRouter):
             }
         )
 
-
 def describe_backend_names() -> tuple[str, ...]:
     return tuple(sorted(describe_all_names()))
-
 
 def describe_all_names() -> set[str]:
     from .._shared.adapters import BACKENDS

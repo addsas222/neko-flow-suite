@@ -40,7 +40,6 @@ class TestRouting(unittest.TestCase):
         self.assertEqual(result.hits, ())
         self.assertEqual(result.entry_chain, ("标准流程",))
 
-
 class TestGate(unittest.TestCase):
     def _directions(self) -> list[Direction]:
         return [
@@ -86,7 +85,6 @@ class TestGate(unittest.TestCase):
     def test_there_is_no_bypass(self) -> None:
         self.assertEqual(Gate().bypass_reason(), "")
 
-
 class TestFacts(unittest.TestCase):
     def test_memory_based_claim_is_flagged(self) -> None:
         claims = scan("我记得 Nano Banana Pro 还没发布。")
@@ -104,7 +102,6 @@ class TestFacts(unittest.TestCase):
         self.assertIn("大疆 Pocket 4", checklist[0])
         self.assertIn("product-facts.md", checklist[-2])
 
-
 class TestRoles(unittest.TestCase):
     def test_animation_leads_with_motion_designer(self) -> None:
         self.assertEqual(rotation_for("animation")[0].id, "motion-designer")
@@ -119,7 +116,6 @@ class TestRoles(unittest.TestCase):
         result = check_coverage("web", ("visual-designer", "copywriter"))
         self.assertFalse(result["ok"])
         self.assertIn("art-director", result["missing"])
-
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

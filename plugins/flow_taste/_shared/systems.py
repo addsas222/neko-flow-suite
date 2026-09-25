@@ -15,7 +15,6 @@ class SystemChoice:
     package: str
     why: str
 
-
 REAL_SYSTEMS: tuple[SystemChoice, ...] = (
     SystemChoice("Microsoft / enterprise SaaS / dashboards", "@fluentui/react-components", "官方 Fluent UI，token 与无障碍都做好了"),
     SystemChoice("Google-ish UI / Material product", "@material/web", "官方 Material 3，可 Theming"),
@@ -42,7 +41,6 @@ AESTHETICS: tuple[tuple[str, str], ...] = (
     ("Apple Liquid Glass", "Apple 只为自家平台文档化；没有官方 liquid-glass.css，网页实现须标注为近似"),
 )
 
-
 @dataclass(slots=True)
 class SystemDecision:
     kind: str  # "official" | "aesthetic"
@@ -51,7 +49,6 @@ class SystemDecision:
 
     def to_dict(self) -> dict[str, str]:
         return {"kind": self.kind, "name": self.name, "directive": self.directive}
-
 
 def choose(signal: str) -> SystemDecision:
     """按信号选系统；命中官方系统就返回它，否则落到美学实现。"""
@@ -67,7 +64,6 @@ def choose(signal: str) -> SystemDecision:
         signal or "unspecified",
         "没有官方包：原生 CSS + Tailwind + 一个维护中的组件库，并在注释里写清借用与原创的边界。",
     )
-
 
 def one_system_rule() -> str:
     return "一个项目一个系统：不要把 Fluent React 和 Carbon 混在同一棵树里。"

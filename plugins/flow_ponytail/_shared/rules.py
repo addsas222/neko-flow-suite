@@ -65,7 +65,6 @@ HOST_ADAPTERS: dict[str, str] = {
     "generic": "RULES.md",
 }
 
-
 def agent_ruleset(level: str = "full") -> str:
     """按强度等级导出可直接粘贴的规则文本。"""
     normalized = normalize_level(level)
@@ -87,13 +86,11 @@ def agent_ruleset(level: str = "full") -> str:
         )
     return header + CORE_RULES
 
-
 def ruleset_for_host(host: str, level: str = "full") -> dict[str, str]:
     """给某个外部宿主返回目标文件名与规则文本。"""
     key = (host or "").strip().lower()
     target = HOST_ADAPTERS.get(key, "RULES.md")
     return {"host": host, "target": target, "rules": agent_ruleset(level)}
-
 
 def levels() -> list[str]:
     return list(LEVELS)

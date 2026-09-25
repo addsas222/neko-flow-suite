@@ -12,7 +12,6 @@ from .entry import TOKEN_GROUPS, DesignEntry
 def _kebab(name: str) -> str:
     return name.strip().lower().replace("_", "-").replace(" ", "-")
 
-
 def to_css_variables(entry: DesignEntry, *, prefix: str = "") -> str:
     """导出 CSS 自定义属性块。prefix 为空时用 slug 作用域。"""
     scope = _kebab(prefix or entry.slug)
@@ -24,10 +23,8 @@ def to_css_variables(entry: DesignEntry, *, prefix: str = "") -> str:
     lines.append("}")
     return "\n".join(lines)
 
-
 def to_json_tokens(entry: DesignEntry) -> dict[str, dict[str, str]]:
     return {group: dict(getattr(entry, group)) for group in TOKEN_GROUPS}
-
 
 def to_markdown_table(entry: DesignEntry) -> str:
     """上游形态：一份 token 清单表格。"""
@@ -40,7 +37,6 @@ def to_markdown_table(entry: DesignEntry) -> str:
         lines += [f"| `{key}` | `{value}` |" for key, value in values.items()]
         lines.append("")
     return "\n".join(lines)
-
 
 def render_directory(catalog, *, fmt: str = "markdown") -> str:
     """把整个目录渲染成一份索引文档。"""

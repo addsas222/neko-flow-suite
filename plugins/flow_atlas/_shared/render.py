@@ -55,7 +55,6 @@ __RUNTIME__
 </html>
 """
 
-
 def render_html(diagram: Diagram, placed: Any | None = None) -> str:
     """把规格渲染成自包含 HTML。"""
     placed = placed if placed is not None else layout(diagram)

@@ -9,7 +9,7 @@ import time
 from dataclasses import dataclass, field
 from typing import Any
 
-from .errors import ConflictError, NotFoundError
+from .errors import ConflictError, NotFoundError, PathError
 from .layers import L0, L1, L2, LayerRecord, demote
 from .vpath import parse
 
@@ -47,7 +47,6 @@ class VFile:
             "tags": list(self.tags),
             "updated_at": self.updated_at,
         }
-
 
 @dataclass(slots=True)
 class VDir:
@@ -96,7 +95,6 @@ class VDir:
             "children": len(self.children),
             "updated_at": self.updated_at,
         }
-
 
 VNode = VFile | VDir
 

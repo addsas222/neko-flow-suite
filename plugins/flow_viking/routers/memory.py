@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Any
-
 from plugin.sdk.plugin import Ok, PluginRouter, plugin_entry, ui
 
 from .._shared.errors import VikingError
@@ -14,7 +12,6 @@ from .._shared.vpath import parse
 def _sentences(text: str) -> list[str]:
     parts = [part.strip() for part in (text or "").replace("\n", " ").split(".")]
     return [part for part in parts if len(part) >= 12]
-
 
 class MemoryRouter(PluginRouter):
     """把一次会话提交进记忆系统，并抽取可复用的事实。"""
@@ -106,9 +103,6 @@ class MemoryRouter(PluginRouter):
             )
         if not name or not body:
             return Ok({"error": "name and body are required to put a skill"})
-        from plugin.sdk.plugin import Err
-
-        from .._shared.errors import PathError
 
         target = parse(root).child(name)
         node = self._fs().write(target.to_url(), body, tags=("skill",))

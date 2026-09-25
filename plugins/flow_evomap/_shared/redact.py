@@ -35,11 +35,9 @@ STILL_UNSAFE = re.compile(
     r"\b(?:sk-[A-Za-z0-9]{20,}|gh[pousr]_[A-Za-z0-9]{16,}|AKIA[0-9A-Z]{16})\b"
 )
 
-
 def secrets_found(text: str) -> list[str]:
     """列出命中的秘密类别，不返回内容本身。"""
     return [name for name, pattern in PATTERNS if pattern.search(text or "")]
-
 
 def redact(text: str, *, strict: bool = True) -> str:
     """脱敏一段文本。strict 下仍像密钥时抛 RedactionError。"""
@@ -54,14 +52,12 @@ def redact(text: str, *, strict: bool = True) -> str:
         raise RedactionError("content still looks like a secret after redaction")
     return cleaned
 
-
 def redact_mapping(payload: dict[str, Any], *, strict: bool = True) -> dict[str, Any]:
     """递归脱敏一个结构，键名本身保持不变。"""
     result: dict[str, Any] = {}
     for key, value in (payload or {}).items():
         result[key] = redact_value(value, strict=strict)
     return result
-
 
 def redact_value(value: Any, *, strict: bool = True) -> Any:
     if isinstance(value, str):

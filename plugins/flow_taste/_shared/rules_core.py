@@ -15,7 +15,6 @@ SEVERITY_BLOCK = "block"
 SEVERITY_WARN = "warn"
 SEVERITY_DEMOTE = "demote"
 
-
 @dataclass(frozen=True, slots=True)
 class Rule:
     id: str
@@ -28,10 +27,8 @@ class Rule:
     def matches(self, text: str) -> list[re.Match[str]]:
         return list(self.pattern.finditer(text))
 
-
 def _rx(pattern: str) -> re.Pattern[str]:
     return re.compile(pattern, re.IGNORECASE)
-
 
 RULES_CORE: tuple[Rule, ...] = (
     Rule(

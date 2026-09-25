@@ -8,12 +8,10 @@ class AtlasError(Exception):
 
     code = "ATLAS_ERROR"
 
-
 class SpecError(AtlasError):
     """规格文档无法解析或不符合类型契约。"""
 
     code = "SPEC_INVALID"
-
 
 class LayoutError(AtlasError):
     """布局阶段无法为规格找到可渲染的几何解。"""

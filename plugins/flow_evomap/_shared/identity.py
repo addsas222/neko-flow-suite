@@ -12,14 +12,11 @@ import stat
 from dataclasses import dataclass
 from pathlib import Path
 
-from .errors import IdentityError
-
 NODE_ID_RE = re.compile(r"^node_[A-Za-z0-9_-]{4,64}$")
 SECRET_RE = re.compile(r"^[0-9a-fA-F]{64}$")
 
 ID_FILE = "node_id"
 SECRET_FILE = "node_secret"
-
 
 @dataclass(frozen=True, slots=True)
 class Identity:
@@ -38,13 +35,11 @@ class Identity:
     def auth_header(self) -> str:
         return f"Bearer {self.node_secret}"
 
-
 def credentials_dir(override: str = "") -> Path:
     """凭据目录；默认 ~/.evomap。"""
     if override:
         return Path(override).expanduser()
     return Path.home() / ".evomap"
-
 
 def locate_credentials(directory: Path) -> Identity | None:
     """从目录读取身份；缺失或格式错误时返回 None。"""
@@ -59,7 +54,6 @@ def locate_credentials(directory: Path) -> Identity | None:
         return Identity(node_id=node_id, node_secret=node_secret)
     return None
 
-
 def recover_identity(directory: Path | None = None) -> Identity | None:
     """先尝试恢复已有身份；恢复失败前不创建新节点。"""
     base = credentials_dir(str(directory) if directory else "")
@@ -72,7 +66,6 @@ def recover_identity(directory: Path | None = None) -> Identity | None:
             return identity
     return None
 
-
 def store_identity(identity: Identity, directory: Path | None = None) -> Path:
     """把身份写回规范位置，并收紧权限。"""
     base = credentials_dir(str(directory) if directory else "")
@@ -82,13 +75,11 @@ def store_identity(identity: Identity, directory: Path | None = None) -> Path:
     _write_private(base / SECRET_FILE, identity.node_secret)
     return base
 
-
 def describe_identity(identity: Identity | None) -> dict[str, object]:
     """状态描述：绝不包含完整密钥。"""
     if identity is None:
         return {"bound": False, "node_id": None, "next": "run the recovery flow before registering"}
     return {"bound": True, **identity.masked()}
-
 
 def _fallback_dirs(base: Path) -> list[Path]:
     home = Path.home()
@@ -99,11 +90,9 @@ def _fallback_dirs(base: Path) -> list[Path]:
         Path(os.environ.get("USERPROFILE", str(home))) / ".evomap",
     ]
 
-
 def _write_private(path: Path, content: str) -> None:
     path.write_text(content + "\n", encoding="utf-8", newline="\n")
     _chmod(path, 0o600)
-
 
 def _chmod(path: Path, mode: int) -> None:
     if os.name != "posix":
@@ -112,7 +101,6 @@ def _chmod(path: Path, mode: int) -> None:
         os.chmod(path, mode)
     except OSError:
         return
-
 
 def _unused() -> None:  # pragma: no cover - keeps the stat import honest
     _ = stat.S_IMODE

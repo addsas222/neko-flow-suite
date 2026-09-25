@@ -6,8 +6,6 @@
 
 from __future__ import annotations
 
-import sys
-from pathlib import Path
 from typing import Annotated
 
 try:
@@ -21,9 +19,12 @@ try:
     )
 except ImportError:
     NekoPluginBase = object  # type: ignore[assignment,misc]
-    Ok = lambda data: {"ok": True, "data": data}  # type: ignore[assignment]
-    Err = lambda error: {"ok": False, "error": str(error)}  # type: ignore[assignment]
-    neko_plugin = lambda cls: cls  # type: ignore[assignment]
+    def Ok(data):  # type: ignore[assignment]
+        return {"ok": True, "data": data}
+    def Err(error):  # type: ignore[assignment]
+        return {"ok": False, "error": str(error)}
+    def neko_plugin(cls):  # type: ignore[assignment]
+        return cls
 
     class _UiFallback:
         """ui.context / ui.action 的本地兜底，签名与插件 SDK 一致。"""
@@ -53,13 +54,8 @@ except ImportError:
 
         return wrap
 
-
-_HERE = Path(__file__).resolve().parent
-if str(_HERE) not in sys.path:
-    sys.path.insert(0, str(_HERE))
-
-from _shared.catalog import Catalog, CatalogError, scan  # noqa: E402
-from _shared.emit import (  # noqa: E402
+from ._shared.catalog import Catalog, CatalogError, scan  # noqa: E402
+from ._shared.emit import (  # noqa: E402
     render_directory,
     to_css_variables,
     to_json_tokens,
@@ -69,12 +65,10 @@ from _shared.emit import (  # noqa: E402
 #: 进程内缓存，避免每次入口重扫整个语料树。
 _CACHE: dict[str, Catalog] = {}
 
-
 def _load(root: str) -> Catalog:
     if root not in _CACHE:
         _CACHE[root] = scan(root)
     return _CACHE[root]
-
 
 @neko_plugin
 class FlowDesignMdPlugin(NekoPluginBase):
@@ -179,7 +173,6 @@ class FlowDesignMdPlugin(NekoPluginBase):
         except CatalogError as exc:
             return Err(str(exc))
         return Ok({"markdown": render_directory(catalog)})
-
 
     # -- Hosted UI ------------------------------------------------------
 

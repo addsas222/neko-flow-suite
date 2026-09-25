@@ -29,7 +29,6 @@ _FLOW_EDGE = re.compile(
 _NODE_STATEMENT = re.compile(r"^([A-Za-z0-9_.-]+)\s*(.*)$")
 _LABEL = re.compile(r"^\s*(?:\[([^\]]*)\]|\(([^)]*)\)|\{([^}]*)\}|\(\(([^)]*)\)\))\s*$")
 
-
 def parse_mermaid(source: str, *, title: str = "") -> dict[str, Any]:
     """把 Mermaid 源码解析成 flow_atlas 规格字典。"""
     if not isinstance(source, str) or not source.strip():
@@ -55,7 +54,6 @@ def parse_mermaid(source: str, *, title: str = "") -> dict[str, Any]:
 
         return parse_states(lines[1:], title, ensure)
     return parse_flow(lines, title)
-
 
 def parse_flow(lines: list[str], title: str) -> dict[str, Any]:
     from .mermaid_nodes import ensure, strip_label

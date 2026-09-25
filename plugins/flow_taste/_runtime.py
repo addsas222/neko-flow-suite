@@ -19,9 +19,12 @@ try:  # 在 N.E.K.O 宿主内
     )
 except ImportError:  # 允许在套件仓库内单独导入做静态检查
     NekoPluginBase = object  # type: ignore[assignment,misc]
-    Ok = lambda data: {"ok": True, "data": data}  # type: ignore[assignment]
-    Err = lambda error: {"ok": False, "error": str(error)}  # type: ignore[assignment]
-    neko_plugin = lambda cls: cls  # type: ignore[assignment]
+    def Ok(data):  # type: ignore[assignment]
+        return {"ok": True, "data": data}
+    def Err(error):  # type: ignore[assignment]
+        return {"ok": False, "error": str(error)}
+    def neko_plugin(cls):  # type: ignore[assignment]
+        return cls
 
     class _UiFallback:
         """ui.context / ui.action 的本地兜底，签名与插件 SDK 一致。"""
@@ -51,18 +54,10 @@ except ImportError:  # 允许在套件仓库内单独导入做静态检查
 
         return wrap
 
-
-import sys
-from pathlib import Path
-
-_HERE = Path(__file__).resolve().parent
-if str(_HERE) not in sys.path:
-    sys.path.insert(0, str(_HERE))
-
-from _shared.brief import Brief, DesignRead, infer  # noqa: E402
-from _shared.dials import Dials, defaults_for  # noqa: E402
-from _shared.gates import evaluate  # noqa: E402
-from _shared.lint import lint_files, lint_html, rule_ids  # noqa: E402
+from ._shared.brief import Brief, DesignRead, infer  # noqa: E402
+from ._shared.dials import Dials, defaults_for  # noqa: E402
+from ._shared.gates import evaluate  # noqa: E402
+from ._shared.lint import lint_files, lint_html, rule_ids  # noqa: E402
 
 
 @neko_plugin

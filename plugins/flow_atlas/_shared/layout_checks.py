@@ -7,7 +7,6 @@ from .receipt import SEVERITY_ERROR, Issue, Receipt, record
 
 LABEL_CLEARANCE = 8.0
 
-
 def check_nodes_nonempty(placed: Layout, receipt: Receipt) -> None:
     record(
         receipt,
@@ -21,7 +20,6 @@ def check_nodes_nonempty(placed: Layout, receipt: Receipt) -> None:
             ("add at least one node",),
         ),
     )
-
 
 def check_no_node_overlap(placed: Layout, receipt: Receipt) -> None:
     collisions: list[str] = []
@@ -41,7 +39,6 @@ def check_no_node_overlap(placed: Layout, receipt: Receipt) -> None:
             ("shorten the affected branch", "split the layer", "remove one node"),
         ),
     )
-
 
 def check_edges_endpoint(placed: Layout, receipt: Receipt) -> None:
     invalid = [
@@ -63,7 +60,6 @@ def check_edges_endpoint(placed: Layout, receipt: Receipt) -> None:
             ("declare both endpoints", "remove the edge"),
         ),
     )
-
 
 def check_label_clearance(placed: Layout, receipt: Receipt) -> None:
     """关系标签不得压住另一条路由或节点。"""
@@ -103,7 +99,6 @@ def check_label_clearance(placed: Layout, receipt: Receipt) -> None:
         ),
     )
 
-
 def check_no_node_crossing(placed: Layout, receipt: Receipt) -> None:
     """边不得穿过与它无关的不透明节点。"""
     crossings: list[str] = []
@@ -127,10 +122,8 @@ def check_no_node_crossing(placed: Layout, receipt: Receipt) -> None:
         ),
     )
 
-
 def point_in(point: Point, box: Box) -> bool:
     return box.x <= point.x <= box.x + box.w and box.y <= point.y <= box.y + box.h
-
 
 def estimate_label_w(label: str) -> float:
     width = 0.0

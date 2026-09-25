@@ -77,7 +77,6 @@ EXAMPLES: dict[str, dict] = {
     },
 }
 
-
 class GalleryRouter(PluginRouter):
     """提供示例与创作提示，不修改用户数据。"""
 

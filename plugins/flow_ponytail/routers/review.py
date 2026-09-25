@@ -2,15 +2,12 @@
 
 from __future__ import annotations
 
-from typing import Any
-
 from plugin.sdk.plugin import Err, Ok, PluginRouter, plugin_entry, ui
 
 from .._shared.discovery import ScopeError
 from .._shared.intensity import LEVELS, describe, normalize_level
 from .._shared.ladder import next_rung, rung_for, rungs
 from .._shared.review_engine import harvest_debt, review_diff, review_repo
-from .._shared.rules import HOST_ADAPTERS, agent_ruleset, ruleset_for_host
 
 
 class ReviewRouter(PluginRouter):

@@ -17,7 +17,6 @@ class Gate:
     question: str
     severity: str = "block"
 
-
 GATES: tuple[Gate, ...] = (
     Gate("design-read-declared", "生成任何代码之前是否先输出了单行 design read？"),
     Gate("dials-declared", "三个旋钮是否已按 design read 定值，且没有起别名？"),
@@ -35,7 +34,6 @@ GATES: tuple[Gate, ...] = (
     Gate("no-handrolled-svg", "是否没有手搓 SVG path？"),
 )
 
-
 @dataclass(slots=True)
 class GateResult:
     gate_id: str
@@ -44,7 +42,6 @@ class GateResult:
 
     def to_dict(self) -> dict[str, object]:
         return {"gate_id": self.gate_id, "ok": self.ok, "note": self.note}
-
 
 @dataclass(slots=True)
 class GateReport:
@@ -67,7 +64,6 @@ class GateReport:
             "failed": [result.gate_id for result in self.failed],
             "results": [result.to_dict() for result in self.results],
         }
-
 
 def evaluate(
     *,

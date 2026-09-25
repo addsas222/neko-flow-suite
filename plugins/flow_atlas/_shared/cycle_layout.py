@@ -92,7 +92,6 @@ def layout_cycle(diagram: Diagram) -> Layout:
         diagram_type="lifecycle",
     )
 
-
 def _transition_path(
     edge: Any,
     source: PlacedNode,

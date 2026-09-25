@@ -4,12 +4,11 @@ from __future__ import annotations
 
 from plugin.sdk.plugin import Err, Ok, PluginRouter, plugin_entry, ui
 
-from .._shared.adapters import BACKENDS, adapter, describe_all
-from .._shared.client import A2AClient, endpoint_url
+from .._shared.client import A2AClient
 from .._shared.errors import EvoError, RedactionError
 from .._shared.identity import recover_identity
 from .._shared.memory import MemoryStore
-from .._shared.redact import redact, secrets_found
+from .._shared.redact import redact
 
 
 class MemoryRouter(PluginRouter):

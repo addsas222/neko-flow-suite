@@ -17,7 +17,6 @@ class Role:
     owns: str
     failure_mode: str
 
-
 ROLES: tuple[Role, ...] = (
     Role("art-director", "艺术总监", "定方向、判品味、砍掉不够好的",
          "做出「都还行」的平庸作品"),
@@ -42,14 +41,12 @@ LEAD_BY_MEDIUM: dict[str, str] = {
     "infographic": "visual-designer",
 }
 
-
 def rotation_for(medium: str) -> tuple[Role, ...]:
     """给定媒介，给出角色轮换顺序：主导角色排最前。"""
     lead = LEAD_BY_MEDIUM.get(medium, "visual-designer")
     ordered = [role for role in ROLES if role.id == lead]
     ordered += [role for role in ROLES if role.id != lead]
     return tuple(ordered)
-
 
 def check_coverage(medium: str, roles_done: tuple[str, ...]) -> dict[str, object]:
     """检查这次交付是否把该做的角色都做了一遍。"""

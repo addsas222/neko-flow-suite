@@ -16,7 +16,6 @@ from .vpath import VPath, parse
 
 _TOKEN_RE = re.compile(r"[A-Za-z0-9_]+|[\u4e00-\u9fff]")
 
-
 @dataclass(slots=True)
 class RetrievalHit:
     """一次检索命中。"""
@@ -38,10 +37,8 @@ class RetrievalHit:
             "snippet": self.snippet,
         }
 
-
 def tokens(text: str) -> list[str]:
     return _TOKEN_RE.findall((text or "").lower())
-
 
 def search(
     fs: VirtualFS,
@@ -86,7 +83,6 @@ def search(
     hits.sort(key=lambda hit: (-hit.score, hit.path))
     return hits[: max(1, limit)]
 
-
 def grep(fs: VirtualFS, pattern: str, *, scope: str = "viking://", limit: int = 20) -> list[dict[str, Any]]:
     """在 scope 子树内逐文件查找。"""
     root = parse(scope)
@@ -104,7 +100,6 @@ def grep(fs: VirtualFS, pattern: str, *, scope: str = "viking://", limit: int = 
                     return matches
     return matches
 
-
 def find(
     fs: VirtualFS,
     query: str,
@@ -119,14 +114,12 @@ def find(
     # 摘要层没有命中时再退回内容层，避免一开始就读全部 L2。
     return search(fs, query, scope=scope, limit=limit, include_content=True)
 
-
 def _summary_of(node: Any) -> str:
     if isinstance(node, VDir):
         return node.summary
     if isinstance(node, VFile):
         return node.summary
     return ""
-
 
 def _snippet(text: str, wanted: list[str], include_content: bool) -> str:
     lines = [line.strip() for line in text.splitlines() if line.strip()]
@@ -135,13 +128,11 @@ def _snippet(text: str, wanted: list[str], include_content: bool) -> str:
             return line[:200] if include_content else line[:120]
     return ""
 
-
 def _term_frequencies(wanted: list[str]) -> dict[str, float]:
     counts: dict[str, int] = {}
     for token in wanted:
         counts[token] = counts.get(token, 0) + 1
     return counts
-
 
 def _score(text: str, wanted: list[str], frequencies: dict[str, float], total: int) -> float:
     lowered = text.lower()

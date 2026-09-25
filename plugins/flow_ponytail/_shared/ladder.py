@@ -15,7 +15,6 @@ RUNGS: tuple[tuple[str, str, str], ...] = (
     ("framework", "新框架", "真的需要新框架吗"),
 )
 
-
 @dataclass(frozen=True, slots=True)
 class LadderRung:
     """阶梯上的一级。"""
@@ -31,10 +30,8 @@ class LadderRung:
     def to_dict(self) -> dict[str, str]:
         return {"key": self.key, "label": self.label, "question": self.question}
 
-
 def rungs() -> list[LadderRung]:
     return [LadderRung(*rung) for rung in RUNGS]
-
 
 def rung_for(key: str) -> LadderRung | None:
     """按 key 取一级；大小写与别名都归一化。"""
@@ -54,7 +51,6 @@ def rung_for(key: str) -> LadderRung | None:
             return rung
     return None
 
-
 def next_rung(key: str) -> LadderRung | None:
     """返回上一级更贵的答案；没有更贵的一级时返回 None。"""
     rung = rung_for(key)
@@ -65,7 +61,6 @@ def next_rung(key: str) -> LadderRung | None:
     if index + 1 >= len(ordered):
         return None
     return ordered[index + 1]
-
 
 def justify(rung: LadderRung | None, reason: str) -> dict[str, Any]:
     """把一次选择固化成可复核的记录。"""

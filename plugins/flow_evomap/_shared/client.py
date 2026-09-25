@@ -14,12 +14,10 @@ import urllib.request
 from dataclasses import dataclass, field
 from typing import Any
 
-from .errors import NetworkError, ProtocolError
 from .redact import redact_mapping
 
 HUB_URL = "https://evomap.ai"
 TIMEOUT_SECONDS = 20.0
-
 
 @dataclass(slots=True)
 class CallResult:
@@ -32,7 +30,6 @@ class CallResult:
 
     def to_dict(self) -> dict[str, Any]:
         return {"ok": self.ok, "status": self.status, "payload": self.payload, "error": self.error}
-
 
 class A2AClient:
     """对 A2A 端点的受控访问面。"""
@@ -79,7 +76,6 @@ class A2AClient:
 
         return await asyncio.to_thread(blocking)
 
-
 def _decode(raw: bytes) -> dict[str, Any]:
     if not raw:
         return {}
@@ -89,12 +85,10 @@ def _decode(raw: bytes) -> dict[str, Any]:
         return {}
     return decoded if isinstance(decoded, dict) else {"data": decoded}
 
-
 def endpoint_url(hub: str, path: str) -> str:
     """拼接完整端点地址，用于面板展示与日志。"""
     base = (hub or HUB_URL).rstrip("/")
     return base + "/" + (path or "").lstrip("/")
-
 
 def _unused() -> None:  # pragma: no cover - keeps urllib.parse honest
     _ = urllib.parse.quote

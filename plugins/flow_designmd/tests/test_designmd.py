@@ -36,7 +36,6 @@ typography:
 Details moved to https://getdesign.md/claude/design-md
 """
 
-
 class TestEntry(unittest.TestCase):
     def test_parses_front_matter(self) -> None:
         entry = parse_design_md(SAMPLE, slug="claude", source_path="/tmp/DESIGN.md")
@@ -66,7 +65,6 @@ class TestEntry(unittest.TestCase):
         entry = parse_design_md(SAMPLE, slug="claude")
         for group in TOKEN_GROUPS:
             self.assertTrue(hasattr(entry, group), group)
-
 
 class TestCatalog(unittest.TestCase):
     def _make_root(self, tmp: str) -> Path:
@@ -121,7 +119,6 @@ class TestCatalog(unittest.TestCase):
             self.assertEqual(stats["count"], 2)
             self.assertGreater(stats["tokens"], 0)
 
-
 class TestEmit(unittest.TestCase):
     def setUp(self) -> None:
         self.entry = parse_design_md(SAMPLE, slug="claude")
@@ -140,7 +137,6 @@ class TestEmit(unittest.TestCase):
         table = to_markdown_table(self.entry)
         self.assertIn("## colors", table)
         self.assertIn("| `primary` | `#cc785c` |", table)
-
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

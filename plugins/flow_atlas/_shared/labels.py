@@ -36,11 +36,9 @@ DEFAULTS: dict[str, str] = {
     "source": "Mermaid source",
 }
 
-
 def labels() -> dict[str, str]:
     """面板用到的本地文案。"""
     return {name: tr(key, default=DEFAULTS[name]) for name, key in LABEL_KEYS.items()}
-
 
 def context(*, saved: list[dict], error: str = "") -> dict:
     """@ui.context(id="atlas") 的返回体，直接进入 props.state。"""

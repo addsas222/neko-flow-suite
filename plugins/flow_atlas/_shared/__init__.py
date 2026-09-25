@@ -8,8 +8,8 @@ from .geometry import Box, Layout, PlacedGroup, PlacedNode, Point, RoutedEdge
 from .layout import layout
 from .mermaid import parse_mermaid
 from .nodes import DIAGRAM_TYPES, Edge, Group, Message, Node, Participant
-from .render import render_html
 from .receipt import Issue, Receipt
+from .render import render_html
 from .spec import Diagram, from_dict
 from .validate import validate
 

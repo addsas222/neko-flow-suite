@@ -26,7 +26,6 @@ DEFAULT_CATEGORIES: tuple[str, ...] = (
     "Consumer",
 )
 
-
 def default_categories() -> dict[str, str]:
     """读取随插件发布的分类映射。"""
     if not CATEGORIES_FILE.is_file():
@@ -36,10 +35,8 @@ def default_categories() -> dict[str, str]:
     except (OSError, json.JSONDecodeError):
         return {}
 
-
 class CatalogError(Exception):
     pass
-
 
 @dataclass(slots=True)
 class Catalog:
@@ -87,7 +84,6 @@ class Catalog:
             "tokens": sum(entry.token_count for entry in self.entries.values()),
         }
 
-
 def scan(root: str | Path, *, categorise: bool = True) -> Catalog:
     """扫描 design-md/<slug>/DESIGN.md。"""
     base = Path(root)
@@ -112,7 +108,6 @@ def scan(root: str | Path, *, categorise: bool = True) -> Catalog:
     if categorise:
         assign_categories(catalog, default_categories())
     return catalog
-
 
 def assign_categories(catalog: Catalog, mapping: dict[str, str]) -> None:
     """按 slug → 分类覆盖默认归类。"""

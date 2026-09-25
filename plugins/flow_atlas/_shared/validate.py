@@ -45,7 +45,6 @@ __all__ = [
     "validate",
 ]
 
-
 def validate(diagram: Diagram, *, wants_showcase: bool = True) -> Receipt:
     """运行工件检查。默认按 showcase 判定。"""
     receipt = Receipt(

@@ -5,11 +5,9 @@ from __future__ import annotations
 from typing import Any
 
 from .errors import SpecError
-from .errors import SpecError
 from .mermaid import _SEQ_PARTICIPANT, _STATE_TRANSITION
 from .mermaid_nodes import split_message
 from .nodes import MAX_LABEL_CHARS
-from typing import Any
 
 
 def parse_sequence(lines: list[str], title: str, ensure: Any) -> dict[str, Any]:
@@ -53,7 +51,6 @@ def parse_sequence(lines: list[str], title: str, ensure: Any) -> dict[str, Any]:
         "messages": messages,
         "meta": {"quality_profile": "showcase"},
     }
-
 
 def parse_states(lines: list[str], title: str, ensure: Any) -> dict[str, Any]:
     nodes: dict[str, dict[str, Any]] = {}

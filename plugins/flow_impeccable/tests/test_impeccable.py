@@ -47,7 +47,6 @@ class TestCommands(unittest.TestCase):
         with self.assertRaises(KeyError):
             by_id("nope")
 
-
 class TestPasses(unittest.TestCase):
     def test_first_pass_is_build(self) -> None:
         self.assertEqual(Verification().next_pass().name, "build")
@@ -75,7 +74,6 @@ class TestPasses(unittest.TestCase):
         self.assertIn("停止自检循环", message)
         self.assertIsNone(violates_bounded_policy(rounds=1, open_findings=2))
 
-
 class TestCraftFloor(unittest.TestCase):
     def test_missing_floor_blocks(self) -> None:
         result = evaluate(changed_elements=("排版", "颜色"), satisfied=("text-scale",))
@@ -92,7 +90,6 @@ class TestCraftFloor(unittest.TestCase):
     def test_unrelated_changes_are_not_blocked(self) -> None:
         result = evaluate(changed_elements=("文案",), satisfied=("no-placeholder-copy",))
         self.assertTrue(result["ok"])
-
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)

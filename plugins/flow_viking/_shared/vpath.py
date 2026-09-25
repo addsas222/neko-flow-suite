@@ -15,7 +15,6 @@ ROOT = "viking://"
 _SEGMENT_RE = re.compile(r"^[A-Za-z0-9._-]{1,64}$")
 _FORBIDDEN = {"..", ".", ""}
 
-
 @dataclass(frozen=True, slots=True)
 class VPath:
     """一个已解析的 viking:// 路径。"""
@@ -54,11 +53,9 @@ class VPath:
     def __str__(self) -> str:  # pragma: no cover - display only
         return self.to_url()
 
-
 def normalize(value: str) -> str:
     """把任意输入收敛成规范的 viking:// URL。"""
     return parse(value).to_url()
-
 
 def parse(value: str) -> VPath:
     """解析一个 viking:// 路径。"""
@@ -86,7 +83,6 @@ def parse(value: str) -> VPath:
         raise PathError("a viking:// path holds at most 16 segments")
     return VPath(SCHEME, tuple(segments))
 
-
 def join(base: str, *parts: str) -> str:
     """把若干段拼到 base 之下。"""
     path = parse(base)
@@ -96,7 +92,6 @@ def join(base: str, *parts: str) -> str:
         path = path.child(str(part).strip("/"))
     return path.to_url()
 
-
 def resolve(base: str, target: str) -> str:
     """把 target 解析成基于 base 的绝对 viking:// 路径。
 
@@ -105,7 +100,6 @@ def resolve(base: str, target: str) -> str:
     if str(target).strip().lower().startswith(SCHEME):
         return normalize(target)
     return join(base, target)
-
 
 def is_ancestor(candidate: VPath, other: VPath) -> bool:
     """candidate 是否是 other 的祖先（含自身）。"""

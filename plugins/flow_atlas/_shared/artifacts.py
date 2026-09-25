@@ -14,12 +14,10 @@ from .errors import SpecError
 
 _SAFE_NAME = re.compile(r"^[A-Za-z0-9._-]{1,64}$")
 
-
 def safe_filename(name: str) -> str:
     """把任意标题收敛成安全的文件名主干。"""
     cleaned = re.sub(r"[^A-Za-z0-9._-]+", "-", name or "diagram").strip("-.")
     return cleaned[:64] or "diagram"
-
 
 def write_atomic(path: Path, payload: bytes) -> None:
     """原子写入：先写同目录临时文件，再替换目标。"""
@@ -35,7 +33,6 @@ def write_atomic(path: Path, payload: bytes) -> None:
         if os.path.exists(tmp):
             os.unlink(tmp)
 
-
 def snapshot_spec(directory: Path, name: str, spec: dict[str, Any]) -> Path:
     """把规格冻结成同目录快照，交付前校验的就是这份字节。"""
     path = directory / f"{safe_filename(name)}.spec.json"
@@ -43,16 +40,13 @@ def snapshot_spec(directory: Path, name: str, spec: dict[str, Any]) -> Path:
     write_atomic(path, payload)
     return path
 
-
 def write_artifact(directory: Path, name: str, html: str) -> Path:
     path = directory / f"{safe_filename(name)}.html"
     write_atomic(path, html.encode("utf-8"))
     return path
 
-
 def digest(payload: bytes) -> str:
     return hashlib.sha256(payload).hexdigest()
-
 
 def load_spec(path: Path) -> dict[str, Any]:
     """从磁盘读回规格，返回原始 dict（由调用方交给 from_dict）。"""
@@ -64,12 +58,10 @@ def load_spec(path: Path) -> dict[str, Any]:
         raise SpecError(f"{path.name} must contain a JSON object")
     return raw
 
-
 def require_safe(name: str) -> str:
     if not _SAFE_NAME.match(name or ""):
         raise SpecError(f"unsafe artifact name: {name!r}")
     return name
-
 
 def list_specs(directory: Path) -> list[dict[str, Any]]:
     """列出已保存的规格及其最近一次校验状态。"""

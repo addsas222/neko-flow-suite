@@ -59,7 +59,6 @@ def layout_layered(diagram: Diagram) -> Layout:
         diagram_type=diagram.type,
     )
 
-
 def _place_layers(diagram: Diagram) -> list[PlacedNode]:
     """按最长路径分配层；环上的回边被忽略以打破循环。"""
     ids = [node.id for node in diagram.nodes]

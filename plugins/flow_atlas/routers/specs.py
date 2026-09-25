@@ -11,7 +11,7 @@ from .._shared.artifacts import digest, list_specs, snapshot_spec, write_artifac
 from .._shared.errors import SpecError
 from .._shared.layout import layout
 from .._shared.render import render_html
-from .._shared.spec import Diagram, from_dict
+from .._shared.spec import from_dict
 from .._shared.validate import validate
 
 

@@ -21,24 +21,30 @@ from .routers.memory import MemoryRouter
 PANEL_CONTEXT = "evomap"
 DEFAULT_HUB = "https://evomap.ai"
 
-
 @neko_plugin
 class FlowEvomapPlugin(NekoPluginBase):
     """进化记忆插件。"""
+
+    # 声明 router 类，供主进程静态扫描 entry 元数据
+    __routers__ = [IdentityRouter, MemoryRouter, CatalogRouter]
 
     def __init__(self, ctx: Any) -> None:
         super().__init__(ctx)
         self.hub_url = DEFAULT_HUB
         self._store: MemoryStore | None = None
-        self.include_router(IdentityRouter())
-        self.include_router(MemoryRouter())
-        self.include_router(CatalogRouter())
+        # 注册 routers — 必须在 __init__ 中，collect_entries 在 startup 之前调用
+        for router_cls in self.__routers__:
+            self.include_router(router_cls())
 
     @property
     def store(self) -> MemoryStore:
         if self._store is None:
             self._store = MemoryStore(self.data_path("memory"))
         return self._store
+
+    @store.setter
+    def store(self, _value: Any) -> None:
+        """SDK 基类在 __init__ 中会写入 store 属性；这里保持惰性的 memory store 语义，忽略该写入。"""
 
     @ui.context(id=PANEL_CONTEXT)
     async def evomap_context(self) -> dict:
