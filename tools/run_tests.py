@@ -130,6 +130,16 @@ def main(argv: list[str]) -> int:
         if failed:
             broken.append(name)
 
+    tsx = subprocess.run(
+        [sys.executable, str(ROOT / "tools" / "check_tsx.py"), "--strict"],
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+    )
+    if (tsx.stdout or "").strip():
+        print((tsx.stdout or "").strip())
+
     print()
     smoke = subprocess.run(
         [sys.executable, str(ROOT / "tools" / "smoke.py")],
@@ -142,6 +152,9 @@ def main(argv: list[str]) -> int:
 
     if broken:
         print(f"\n失败：{', '.join(broken)}")
+        return 1
+    if tsx.returncode != 0:
+        print("\n失败：TSX 面板存在裸导入或契约错误（见 tools/check_tsx.py）")
         return 1
     if smoke.returncode != 0:
         return 1

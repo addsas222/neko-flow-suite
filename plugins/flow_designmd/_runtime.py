@@ -11,12 +11,40 @@ from pathlib import Path
 from typing import Annotated
 
 try:
-    from plugin.sdk.plugin import NekoPluginBase, Ok, Err, neko_plugin, plugin_entry
+    from plugin.sdk.plugin import (
+        Err,
+        NekoPluginBase,
+        Ok,
+        neko_plugin,
+        plugin_entry,
+        ui,
+    )
 except ImportError:
     NekoPluginBase = object  # type: ignore[assignment,misc]
     Ok = lambda data: {"ok": True, "data": data}  # type: ignore[assignment]
     Err = lambda error: {"ok": False, "error": str(error)}  # type: ignore[assignment]
     neko_plugin = lambda cls: cls  # type: ignore[assignment]
+
+    class _UiFallback:
+        """ui.context / ui.action 的本地兜底，签名与插件 SDK 一致。"""
+
+        @staticmethod
+        def context(**kwargs):
+            def wrap(func):
+                func._ui_context = kwargs
+                return func
+
+            return wrap
+
+        @staticmethod
+        def action(**kwargs):
+            def wrap(func):
+                func._ui_action = kwargs
+                return func
+
+            return wrap
+
+    ui = _UiFallback
 
     def plugin_entry(**kwargs):  # type: ignore[no-untyped-def]
         def wrap(func):  # type: ignore[no-untyped-def]
@@ -52,6 +80,7 @@ def _load(root: str) -> Catalog:
 class FlowDesignMdPlugin(NekoPluginBase):
     """DESIGN.md 语料索引与导出。"""
 
+    @ui.action(id="scan", label="扫描语料")
     @plugin_entry(id="scan", name="扫描语料", description="扫描 design-md 根目录并建索引。")
     async def scan_root(
         self,
@@ -63,6 +92,7 @@ class FlowDesignMdPlugin(NekoPluginBase):
         except CatalogError as exc:
             return Err(str(exc))
 
+    @ui.action(id="lookup", label="查条目")
     @plugin_entry(id="lookup", name="查条目", description="按 slug 或名字取一份 DESIGN.md。")
     async def lookup(
         self,
@@ -74,6 +104,7 @@ class FlowDesignMdPlugin(NekoPluginBase):
         except (CatalogError, KeyError) as exc:
             return Err(str(exc))
 
+    @ui.action(id="search", label="检索语料")
     @plugin_entry(
         id="search",
         name="检索语料",
@@ -107,6 +138,7 @@ class FlowDesignMdPlugin(NekoPluginBase):
             }
         )
 
+    @ui.action(id="export", label="导出 token")
     @plugin_entry(
         id="export",
         name="导出 token",
@@ -131,6 +163,7 @@ class FlowDesignMdPlugin(NekoPluginBase):
             return Ok({"slug": entry.slug, "markdown": to_markdown_table(entry)})
         return Err(f"unsupported format {fmt!r}; expected css / json / markdown")
 
+    @ui.action(id="directory", label="目录索引")
     @plugin_entry(
         id="directory",
         name="目录索引",
@@ -146,3 +179,19 @@ class FlowDesignMdPlugin(NekoPluginBase):
         except CatalogError as exc:
             return Err(str(exc))
         return Ok({"markdown": render_directory(catalog)})
+
+
+    # -- Hosted UI ------------------------------------------------------
+
+    @ui.context(id="dashboard")
+    async def dashboard_context(self) -> dict:
+        """plugin.toml 里的 context = "dashboard" 由这里提供 props.state。"""
+        return {
+            "labels": {
+                "title": "Flow DesignMD",
+                "subtitle": "DESIGN.md 语料索引",
+                "root_hint": "指向 design-md/<slug>/DESIGN.md 布局的根目录；语料不在本仓库内。",
+                "search_hint": "命中 slug 或名字时加权最高。",
+            },
+            "plugin_id": self.plugin_id,
+        }

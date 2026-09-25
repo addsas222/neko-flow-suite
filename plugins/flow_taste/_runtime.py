@@ -9,12 +9,40 @@ from __future__ import annotations
 from typing import Annotated
 
 try:  # 在 N.E.K.O 宿主内
-    from plugin.sdk.plugin import NekoPluginBase, Ok, Err, neko_plugin, plugin_entry
+    from plugin.sdk.plugin import (
+        Err,
+        NekoPluginBase,
+        Ok,
+        neko_plugin,
+        plugin_entry,
+        ui,
+    )
 except ImportError:  # 允许在套件仓库内单独导入做静态检查
     NekoPluginBase = object  # type: ignore[assignment,misc]
     Ok = lambda data: {"ok": True, "data": data}  # type: ignore[assignment]
     Err = lambda error: {"ok": False, "error": str(error)}  # type: ignore[assignment]
     neko_plugin = lambda cls: cls  # type: ignore[assignment]
+
+    class _UiFallback:
+        """ui.context / ui.action 的本地兜底，签名与插件 SDK 一致。"""
+
+        @staticmethod
+        def context(**kwargs):
+            def wrap(func):
+                func._ui_context = kwargs
+                return func
+
+            return wrap
+
+        @staticmethod
+        def action(**kwargs):
+            def wrap(func):
+                func._ui_action = kwargs
+                return func
+
+            return wrap
+
+    ui = _UiFallback
 
     def plugin_entry(**kwargs):  # type: ignore[no-untyped-def]
         def wrap(func):  # type: ignore[no-untyped-def]
@@ -41,6 +69,7 @@ from _shared.lint import lint_files, lint_html, rule_ids  # noqa: E402
 class FlowTastePlugin(NekoPluginBase):
     """反 AI 味设计门禁。来源：Leonxlnx/taste-skill（MIT）。见本目录 SOURCE.md。"""
 
+    @ui.action(id="read", label="Design read")
     @plugin_entry(
         id="read",
         name="Design read",
@@ -78,6 +107,7 @@ class FlowTastePlugin(NekoPluginBase):
         except Exception as exc:  # noqa: BLE001 - 跨进程必须转 Err
             return Err(str(exc))
 
+    @ui.action(id="lint", label="反默认扫描")
     @plugin_entry(
         id="lint",
         name="反默认扫描",
@@ -95,10 +125,12 @@ class FlowTastePlugin(NekoPluginBase):
         except Exception as exc:  # noqa: BLE001
             return Err(str(exc))
 
+    @ui.action(id="rules", label="规则表")
     @plugin_entry(id="rules", name="规则表", description="列出全部反默认规则。")
     async def rules(self) -> dict:
         return Ok({"rules": list(rule_ids()), "count": len(rule_ids())})
 
+    @ui.action(id="preflight", label="交付前硬门")
     @plugin_entry(
         id="preflight",
         name="交付前硬门",
@@ -136,3 +168,17 @@ class FlowTastePlugin(NekoPluginBase):
             },
         )
         return Ok(report.to_dict())
+
+    # -- Hosted UI ------------------------------------------------------
+
+    @ui.context(id="dashboard")
+    async def dashboard_context(self) -> dict:
+        """plugin.toml 里的 context = "dashboard" 由这里提供 props.state。"""
+        return {
+            "labels": {
+                "title": "Flow Taste",
+                "subtitle": "反 AI 味设计门禁",
+                "read_hint": "生成任何代码之前先拿 design read：单行 design read + 三旋钮推荐值。",
+            },
+            "plugin_id": self.plugin_id,
+        }

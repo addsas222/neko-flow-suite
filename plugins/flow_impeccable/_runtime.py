@@ -11,12 +11,40 @@ from pathlib import Path
 from typing import Annotated
 
 try:
-    from plugin.sdk.plugin import NekoPluginBase, Ok, Err, neko_plugin, plugin_entry
+    from plugin.sdk.plugin import (
+        Err,
+        NekoPluginBase,
+        Ok,
+        neko_plugin,
+        plugin_entry,
+        ui,
+    )
 except ImportError:
     NekoPluginBase = object  # type: ignore[assignment,misc]
     Ok = lambda data: {"ok": True, "data": data}  # type: ignore[assignment]
     Err = lambda error: {"ok": False, "error": str(error)}  # type: ignore[assignment]
     neko_plugin = lambda cls: cls  # type: ignore[assignment]
+
+    class _UiFallback:
+        """ui.context / ui.action 的本地兜底，签名与插件 SDK 一致。"""
+
+        @staticmethod
+        def context(**kwargs):
+            def wrap(func):
+                func._ui_context = kwargs
+                return func
+
+            return wrap
+
+        @staticmethod
+        def action(**kwargs):
+            def wrap(func):
+                func._ui_action = kwargs
+                return func
+
+            return wrap
+
+    ui = _UiFallback
 
     def plugin_entry(**kwargs):  # type: ignore[no-untyped-def]
         def wrap(func):  # type: ignore[no-untyped-def]
@@ -44,6 +72,7 @@ from _shared.passes import (  # noqa: E402
 class FlowImpeccablePlugin(NekoPluginBase):
     """设计命令路由 + 有界验证 + craft floor。"""
 
+    @ui.action(id="route", label="路由请求")
     @plugin_entry(
         id="route",
         name="路由请求",
@@ -58,6 +87,7 @@ class FlowImpeccablePlugin(NekoPluginBase):
         except Exception as exc:  # noqa: BLE001
             return Err(str(exc))
 
+    @ui.action(id="commands", label="命令表")
     @plugin_entry(id="commands", name="命令表", description="列出全部命令与分组。")
     async def commands(self) -> dict:
         from _shared.commands import COMMANDS
@@ -79,6 +109,7 @@ class FlowImpeccablePlugin(NekoPluginBase):
             }
         )
 
+    @ui.action(id="plan", label="有界验证计划")
     @plugin_entry(
         id="plan",
         name="有界验证计划",
@@ -102,6 +133,7 @@ class FlowImpeccablePlugin(NekoPluginBase):
             }
         )
 
+    @ui.action(id="craftfloor", label="Craft floor")
     @plugin_entry(
         id="craftfloor",
         name="Craft floor",
@@ -122,3 +154,21 @@ class FlowImpeccablePlugin(NekoPluginBase):
                 ),
             )
         )
+
+
+    # -- Hosted UI ------------------------------------------------------
+
+    @ui.context(id="dashboard")
+    async def dashboard_context(self) -> dict:
+        """plugin.toml 里的 context = "dashboard" 由这里提供 props.state。"""
+        return {
+            "labels": {
+                "title": "Flow Impeccable",
+                "subtitle": "设计命令路由",
+                "route_hint": "命中多个关键词时不猜：把候选都带回，只问一次；没命中则走 shape。",
+                "commands_hint": "命令分组：setup / new / enhance / fix / iterate。",
+                "floor_hint": "先选改动涉及的元素类别，再判定是否踩了底线；非空即阻断。",
+                "plan_hint": "不要开放式自检循环：build → inspect → fix → confirm，最多 2 轮。",
+            },
+            "plugin_id": self.plugin_id,
+        }

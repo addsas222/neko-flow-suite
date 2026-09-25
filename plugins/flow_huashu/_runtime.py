@@ -11,12 +11,40 @@ from pathlib import Path
 from typing import Annotated
 
 try:
-    from plugin.sdk.plugin import NekoPluginBase, Ok, Err, neko_plugin, plugin_entry
+    from plugin.sdk.plugin import (
+        Err,
+        NekoPluginBase,
+        Ok,
+        neko_plugin,
+        plugin_entry,
+        ui,
+    )
 except ImportError:
     NekoPluginBase = object  # type: ignore[assignment,misc]
     Ok = lambda data: {"ok": True, "data": data}  # type: ignore[assignment]
     Err = lambda error: {"ok": False, "error": str(error)}  # type: ignore[assignment]
     neko_plugin = lambda cls: cls  # type: ignore[assignment]
+
+    class _UiFallback:
+        """ui.context / ui.action 的本地兜底，签名与插件 SDK 一致。"""
+
+        @staticmethod
+        def context(**kwargs):
+            def wrap(func):
+                func._ui_context = kwargs
+                return func
+
+            return wrap
+
+        @staticmethod
+        def action(**kwargs):
+            def wrap(func):
+                func._ui_action = kwargs
+                return func
+
+            return wrap
+
+    ui = _UiFallback
 
     def plugin_entry(**kwargs):  # type: ignore[no-untyped-def]
         def wrap(func):  # type: ignore[no-untyped-def]
@@ -40,6 +68,7 @@ from _shared.routing import route as route_task  # noqa: E402
 class FlowHuashuPlugin(NekoPluginBase):
     """三方向硬门 + 事实验证 + 工作室角色轮换。"""
 
+    @ui.action(id="route", label="任务路由")
     @plugin_entry(
         id="route",
         name="任务路由",
@@ -54,6 +83,7 @@ class FlowHuashuPlugin(NekoPluginBase):
         except Exception as exc:  # noqa: BLE001
             return Err(str(exc))
 
+    @ui.action(id="gate", label="三方向硬门")
     @plugin_entry(
         id="gate",
         name="三方向硬门",
@@ -91,6 +121,7 @@ class FlowHuashuPlugin(NekoPluginBase):
             payload["blocked"] = str(exc)
         return Ok(payload)
 
+    @ui.action(id="facts", label="事实验证")
     @plugin_entry(
         id="facts",
         name="事实验证",
@@ -110,6 +141,7 @@ class FlowHuashuPlugin(NekoPluginBase):
             }
         )
 
+    @ui.action(id="roles", label="工作室角色")
     @plugin_entry(id="roles", name="工作室角色", description="按媒介给出角色轮换顺序与覆盖检查。")
     async def roles(
         self,
@@ -129,3 +161,20 @@ class FlowHuashuPlugin(NekoPluginBase):
                 ),
             }
         )
+
+
+    # -- Hosted UI ------------------------------------------------------
+
+    @ui.context(id="dashboard")
+    async def dashboard_context(self) -> dict:
+        """plugin.toml 里的 context = "dashboard" 由这里提供 props.state。"""
+        return {
+            "labels": {
+                "title": "Flow Huashu",
+                "subtitle": "三方向硬门",
+                "route_hint": "先扫路由表，多信号按行序叠加入口链，而不是二选一。",
+                "gate_hint": "指定风格/品牌不豁免：必须出三个差异化方向，等用户选定才能进入执行。",
+                "facts_hint": "涉及具体产品/技术的断言，先检索再写，禁止凭训练语料断言。",
+            },
+            "plugin_id": self.plugin_id,
+        }
